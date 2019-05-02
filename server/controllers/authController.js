@@ -20,6 +20,10 @@ exports.signupPost = (req, res, next) => {
   const password = req.body.password;
   const email = req.body.email;
 
+  // req.assert('username', 'Name cannot be empty').notEmpty();
+  // const errors = req.validationErrors();
+  // if (errors) return res.status(400).send(errors);
+
   if (!username || !password || !email) {
     return res
       .status(400)
@@ -31,7 +35,7 @@ exports.signupPost = (req, res, next) => {
     if (existingUser)
       return res
         .status(400)
-        .send({ error: 'Email/User is already registered' });
+        .json({ error: 'Email/User is already registered' });
 
     const hash = bcrypt.hashSync(password, 10);
     const user = new User({
@@ -67,7 +71,7 @@ exports.signupPost = (req, res, next) => {
           subject: 'Account Verification Token',
           text: `Hello, ${username}\n
           Please verify your account by clicking the link:
-          http://${req.headers.host}/confirmation?token=${
+          http://${req.headers.host}/api/confirmation?token=${
             verificationToken.token
           }&email=${email}.`
         };
@@ -109,10 +113,10 @@ exports.confirmationGet = (req, res, next) => {
         existingUser.isVerified = true;
         existingUser.save(err => {
           if (err) return next(err);
-          // res.send({
-          //   message: 'The account has been verified. Please log in.'
-          // });
-          res.json({ token: tokenForUser(existingUser) });
+          res.send({
+            message: 'The account has been verified. Please log in.'
+          });
+          // res.json({ token: tokenForUser(existingUser) });
         });
       }
     );
@@ -153,7 +157,7 @@ exports.resendTokenPost = (req, res, next) => {
         text: `Hello, ${existingUser.username}
         
         Please verify your account by clicking the link:
-        http://${req.headers.host}/confirmation/${verificationToken.token}.`
+        http://${req.headers.host}/api/confirmation/${verificationToken.token}.`
       };
       sgMail.send(mailOptions, err => {
         if (err) return next(err);

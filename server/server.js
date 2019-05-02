@@ -4,6 +4,8 @@ const http = require('http');
 const keys = require('./config/keys');
 const logger = require('morgan');
 const routes = require('./routes/routes');
+const cors = require('cors');
+const expressValidator = require('express-validator');
 
 const app = express();
 
@@ -14,6 +16,8 @@ mongoose.set('useCreateIndex', true);
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(cors());
+app.use(expressValidator());
 
 routes(app);
 
