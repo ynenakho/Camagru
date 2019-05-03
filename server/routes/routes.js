@@ -6,7 +6,10 @@ const requireSignin = passport.authenticate('local', { session: false });
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 module.exports = app => {
+  app.get('/api/current', requireAuth, authController.currentGet);
   app.get('/api', requireAuth, (req, res) => res.send({ success: true }));
+  app.post('/api/forgotpassword', authController.forgotPasswordPost);
+  app.post('/api/updateprofile', requireAuth, authController.updateProfilePost);
   app.post('/api/signup', authController.signupPost);
   app.post('/api/signin', requireSignin, authController.signinPost);
 

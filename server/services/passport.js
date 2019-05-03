@@ -27,16 +27,15 @@ const localLogin = new LocalStrategy(
 );
 
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: keys.jwtTokenSecret
 };
 
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   User.findById(payload.sub, (err, existingUser) => {
     if (err) return done(err, false);
-    if (!existingUser)
-      return done(null, false, { error: 'Incorrect authorization token.' });
-    done(null, existingUser, { message: 'Passed jwt authorization.' });
+    if (!existingUser) return done(null, false);
+    return done(null, existingUser);
   });
 });
 

@@ -6,11 +6,14 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 
+import setAuthToken from './components/common/setAuthToken';
+import { setCurrentUser } from './actions/authActions';
+
 import reducers from './reducers';
 
 const storeInitState = {
   auth: {
-    authenticated: localStorage.getItem('token')
+    authenticated: localStorage.getItem('jwtToken')
   }
 };
 
@@ -21,6 +24,12 @@ const store = createStore(
   storeInitState,
   composeEnhancers(applyMiddleware(reduxThunk))
 );
+
+if (localStorage.jwtToken) {
+  // Set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+  store.dispatch(setCurrentUser());
+}
 
 ReactDOM.render(
   <Provider store={store}>

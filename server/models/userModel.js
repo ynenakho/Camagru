@@ -6,7 +6,8 @@ const userSchema = new Schema({
   username: { type: String, unique: true },
   password: String,
   email: { type: String, unique: true, lowercase: true },
-  isVerified: { type: Boolean, default: false }
+  isVerified: { type: Boolean, default: false },
+  getNotified: { type: Boolean, default: true }
 });
 
 // userSchema.pre('save', function(next) {

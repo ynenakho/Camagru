@@ -1,6 +1,47 @@
-import { AUTH_USER, AUTH_ERROR } from './types';
+import { AUTH_USER, AUTH_ERROR, GET_CURRENT_USER, USER_ERROR } from './types';
 import { SubmissionError } from 'redux-form';
+import setAuthToken from '../components/common/setAuthToken';
 import axios from 'axios';
+
+export const updateProfile = (userData, callback) => dispatch =>
+  axios
+    .post('/api/updateprofile', userData)
+    .then(response => {
+      dispatch({
+        type: AUTH_USER,
+        payload: response.data.token
+      });
+      localStorage.setItem('jwtToken', response.data.token);
+      setAuthToken(response.data.token);
+      dispatch(setCurrentUser());
+      callback();
+    })
+    .catch(e => {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: e.response.data.error
+      });
+      throw new SubmissionError({
+        _error: e.response.data.error
+      });
+    });
+
+export const setCurrentUser = () => dispatch => {
+  axios
+    .get('/api/current')
+    .then(response =>
+      dispatch({
+        type: GET_CURRENT_USER,
+        payload: response.data
+      })
+    )
+    .catch(e =>
+      dispatch({
+        type: USER_ERROR,
+        payload: e.response.data.error
+      })
+    );
+};
 
 export const signup = ({ email, password, username }, callback) => dispatch =>
   axios
@@ -10,11 +51,11 @@ export const signup = ({ email, password, username }, callback) => dispatch =>
       username
     })
     .then(response => {
-      dispatch({
-        type: AUTH_USER,
-        payload: response.data.token
-      });
-      localStorage.setItem('token', response.data.token);
+      // dispatch({
+      //   type: AUTH_USER,
+      //   payload: response.data.token
+      // });
+      // localStorage.setItem('jwtToken', 'Bearer ' + response.data.token);
       callback();
     })
     .catch(e => {
@@ -38,7 +79,9 @@ export const signin = ({ username, password }, callback) => dispatch =>
         type: AUTH_USER,
         payload: response.data.token
       });
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('jwtToken', response.data.token);
+      setAuthToken(response.data.token);
+      dispatch(setCurrentUser());
       callback();
     })
     .catch(e => {
@@ -51,11 +94,29 @@ export const signin = ({ username, password }, callback) => dispatch =>
       });
     });
 
-export const signout = () => {
-  localStorage.removeItem('token');
-
-  return {
+export const signout = () => dispatch => {
+  localStorage.removeItem('jwtToken');
+  setAuthToken(false);
+  dispatch({
+    type: GET_CURRENT_USER,
+    payload: {}
+  });
+  dispatch({
     type: AUTH_USER,
     payload: ''
-  };
+  });
 };
+
+export const forgotPassword = ({ email }, callback) => dispatch =>
+  axios
+    .post('/api/forgotpassword', { email })
+    .then(response => callback())
+    .catch(e => {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: e.response.data.error
+      });
+      throw new SubmissionError({
+        _error: e.response.data.error
+      });
+    });

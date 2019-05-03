@@ -3,42 +3,16 @@ import { reduxForm, Field, reset } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/authActions';
+import renderField from '../common/renderField';
 // import M from 'materialize-css';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class SignIn extends Component {
   onSubmit = formValues => {
-    console.log('signin form values', formValues);
-
     return this.props.signin(formValues, () => {
       this.props.history.push('/');
     });
   };
-
-  renderField = ({
-    icon,
-    input,
-    label,
-    type,
-    name,
-    meta: { touched, error, warning }
-  }) => (
-    <div className="input-field invalid">
-      <i className="material-icons prefix">{icon}</i>
-      <input
-        {...input}
-        type={type}
-        autoComplete="off"
-        className={touched && error ? 'invalid' : touched ? 'valid' : ''}
-      />
-
-      <label className="white-text" htmlFor={name}>
-        {label}
-      </label>
-      {touched &&
-        (error && <span className="helper-text" data-error={error} />)}
-    </div>
-  );
 
   render() {
     const { handleSubmit, submitting, error } = this.props;
@@ -51,18 +25,20 @@ class SignIn extends Component {
                 <h1>Login</h1>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
                   <Field
+                    labelColor="white-text"
                     label="Username"
                     icon="account_box"
                     name="username"
                     type="text"
-                    component={this.renderField}
+                    component={renderField}
                   />
                   <Field
+                    labelColor="white-text"
                     label="Password"
                     icon="lock"
                     name="password"
                     type="password"
-                    component={this.renderField}
+                    component={renderField}
                   />
                   {error && <div style={{ color: 'red' }}>{error}</div>}
                   <button
@@ -78,6 +54,19 @@ class SignIn extends Component {
                   >
                     LOGIN
                   </button>
+                  <Link
+                    to="/forgotpassword"
+                    disabled={submitting}
+                    className="btn btn-extended grey lighten-4 black-text"
+                    style={{
+                      display: 'block',
+                      width: '80%',
+                      margin: 'auto',
+                      marginTop: '20px'
+                    }}
+                  >
+                    FORGOT PASSWORD
+                  </Link>
                 </form>
               </div>
             </div>

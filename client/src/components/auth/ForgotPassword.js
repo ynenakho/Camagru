@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { reduxForm, Field, reset } from 'redux-form';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as authActions from '../../actions/authActions';
+import renderField from '../common/renderField';
 import M from 'materialize-css';
 import { Link } from 'react-router-dom';
-import renderField from '../common/renderField';
 
-class SignUp extends Component {
+class ForgotPassword extends Component {
   componentDidMount() {
     this.modalTrigger = M.Modal.init(this.modal);
   }
+
   onSubmit = formValues => {
-    return this.props.signup(formValues, () => {
+    return this.props.forgotPassword(formValues, () => {
       this.modalTrigger.open();
     });
   };
@@ -26,30 +27,15 @@ class SignUp extends Component {
             <div className="row">
               <div className="col s12 m8 offset-m2 l6 offset-l3">
                 <div className="card-panel blue darken-2 white-text center">
-                  <h1>Sign Up</h1>
+                  <h3>Forgot Password?</h3>
+                  <h6>Get your new password sent on email</h6>
                   <form onSubmit={handleSubmit(this.onSubmit)}>
-                    <Field
-                      labelColor="white-text"
-                      label="Username"
-                      icon="account_box"
-                      name="username"
-                      type="text"
-                      component={renderField}
-                    />
                     <Field
                       labelColor="white-text"
                       label="Email"
                       icon="email"
                       name="email"
                       type="text"
-                      component={renderField}
-                    />
-                    <Field
-                      labelColor="white-text"
-                      label="Password"
-                      icon="lock"
-                      name="password"
-                      type="password"
                       component={renderField}
                     />
                     {error && <div style={{ color: 'red' }}>{error}</div>}
@@ -64,7 +50,7 @@ class SignUp extends Component {
                         marginTop: '20px'
                       }}
                     >
-                      SIGN UP
+                      SUBMIT
                     </button>
                   </form>
                 </div>
@@ -74,18 +60,15 @@ class SignUp extends Component {
         </div>
         <div id="modal1" className="modal" ref={modal => (this.modal = modal)}>
           <div className="modal-content">
-            <h4>Almost there!</h4>
-            <p>
-              Check your email and follow the instructions to validate your
-              account
-            </p>
+            <h4>Confirmation</h4>
+            <p>New password has been sent to {this.props.email}</p>
           </div>
           <div className="modal-footer">
             <Link
               to="/signin"
               className="modal-close waves-effect waves-green btn-flat"
             >
-              OK
+              Login
             </Link>
           </div>
         </div>
@@ -94,7 +77,7 @@ class SignUp extends Component {
   }
 }
 
-const validate = ({ username, email, password }) => {
+const validate = ({ email }) => {
   const errors = {};
 
   if (!email) {
@@ -102,31 +85,20 @@ const validate = ({ username, email, password }) => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
     errors.email = 'Invalid email address';
   }
-  if (!password) {
-    errors.password = 'Password field is required';
-  } else if (password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
-  }
-  if (!username) {
-    errors.username = 'Username field is required';
-  } else if (username.length < 4 || username.length > 15) {
-    errors.username = 'Username must be between 4 and 15 characters';
-  }
   return errors;
 };
 
-const mapStateToProps = state => {
-  return {
-    errorMessage: state.auth.errorMessage
-  };
-};
+const selector = formValueSelector('forgotPassword');
 
-const afterSubmit = (result, dispatch) => dispatch(reset('signUp'));
+const mapStateToProps = state => ({
+  errorMessage: state.auth.errorMessage,
+  email: selector(state, 'email')
+});
 
 export default compose(
   connect(
     mapStateToProps,
     authActions
   ),
-  reduxForm({ form: 'signUp', validate, onSubmitSuccess: afterSubmit })
-)(SignUp);
+  reduxForm({ form: 'forgotPassword', validate })
+)(ForgotPassword);
