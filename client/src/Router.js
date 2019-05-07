@@ -7,7 +7,7 @@ import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import SignOut from './components/auth/SignOut';
 import Settings from './components/Settings';
-import MakePicture from './components/MakePicture';
+import TakePicture from './components/takePicture/TakePicture';
 import ForgotPassword from './components/auth/ForgotPassword';
 import PrivateRoute from './components/common/PrivateRoute';
 
@@ -22,7 +22,7 @@ export class Router extends Component {
           <Route path="/signout" component={SignOut} />
           <Route path="/forgotpassword" component={ForgotPassword} />
           <PrivateRoute path="/settings" component={Settings} />
-          <PrivateRoute path="/picture" component={MakePicture} />
+          <PrivateRoute path="/picture" component={TakePicture} />
         </App>
       </BrowserRouter>
     );
