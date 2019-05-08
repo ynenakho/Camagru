@@ -3,6 +3,7 @@ import WebcamCapture from './WebcamCapture';
 import Frames from './Frames';
 import Stickers from './Stickers';
 import Sticker from './Sticker';
+import RenderAllPictures from './RenderAllPictures';
 import { connect } from 'react-redux';
 import * as editPictureActions from '../../actions/editPictureActions';
 
@@ -12,7 +13,9 @@ class TakePicture extends Component {
     y: 0
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { getAllPictures } = this.props;
+    await getAllPictures();
     this.selectedSticker = document.querySelector('#sticker');
   }
 
@@ -49,27 +52,15 @@ class TakePicture extends Component {
         <Sticker />
         <div className="row" style={{ margin: 0 }}>
           <div className="col s12 m8">
-            <div
-              className="card-panel blue darken-2 white-text center"
-              style={{
-                minHeight: 'calc(100vh - 144px)',
-                margin: '15px 0',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyItems: 'space-between'
-              }}
-            >
+            <div className="card-panel blue darken-2 white-text center">
               <WebcamCapture />
               <Frames />
               <Stickers />
             </div>
           </div>
           <div className="col s12 m4">
-            <div
-              className="card-panel blue darken-2 white-text center"
-              style={{ margin: 0 }}
-            >
-              pictures list
+            <div className="card-panel blue darken-2 white-text center">
+              <RenderAllPictures />
             </div>
           </div>
         </div>
@@ -79,7 +70,8 @@ class TakePicture extends Component {
 }
 
 const mapStateToProps = state => ({
-  sticker: state.edit.sticker
+  sticker: state.edit.sticker,
+  pictures: state.edit.pictures
 });
 
 export default connect(

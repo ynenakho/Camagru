@@ -21,13 +21,12 @@ class WebcamCapture extends Component {
   };
 
   clearChanges = () => {
-    this.props.clearCoords();
+    this.props.addStickerCoords([]);
     this.props.changeFrame('');
   };
 
   resetPhoto = () => {
-    this.props.clearCoords();
-    this.props.changeFrame('');
+    this.props.clearPicture();
     this.setState({
       imageSrc: ''
     });
@@ -35,8 +34,8 @@ class WebcamCapture extends Component {
 
   renderWebcam = () => {
     const videoConstraints = {
-      width: 1280,
-      height: 720,
+      width: 1536,
+      height: 1024,
       facingMode: 'user'
     };
 
@@ -64,7 +63,7 @@ class WebcamCapture extends Component {
   };
 
   renderButtons = () => {
-    // const { clearCoords } = this.props;
+    const { savePictureToServer } = this.props;
     if (!this.state.imageSrc) {
       return (
         <button
@@ -79,19 +78,22 @@ class WebcamCapture extends Component {
         <div>
           <button
             className="btn grey lighten-4 black-text"
-            onClick={this.resetPhoto}
+            onClick={() => this.resetPhoto()}
           >
             Reset
           </button>
           <button
             className="btn grey lighten-4 black-text"
-            onClick={this.clearChanges}
+            onClick={() => this.clearChanges()}
           >
             Clear
           </button>
           <button
             className="btn grey lighten-4 black-text"
-            // onClick={this.capture}
+            onClick={() => {
+              savePictureToServer(this.props.canvas);
+              this.resetPhoto();
+            }}
           >
             Save photo
           </button>
@@ -110,7 +112,11 @@ class WebcamCapture extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  canvas: state.edit.canvas
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   editPictureActions
 )(WebcamCapture);

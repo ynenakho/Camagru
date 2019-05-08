@@ -10,16 +10,6 @@ const userSchema = new Schema({
   getNotified: { type: Boolean, default: true }
 });
 
-// userSchema.pre('save', function(next) {
-//   const user = this;
-
-//   bcrypt.hash(user.password, 10, (err, hash) => {
-//     if (err) return next(err);
-//     user.password = hash;
-//     next();
-//   });
-// });
-
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return callback(err);
