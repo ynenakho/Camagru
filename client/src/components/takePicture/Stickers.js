@@ -1,48 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as editPictureActions from '../../actions/editPictureActions';
-import ReactDOM from 'react-dom';
 
 export class Stickers extends Component {
-  render() {
+  renderSticker = path => {
     const { chooseSticker } = this.props;
     return (
+      <img
+        src={path}
+        width="100px"
+        height="100px"
+        alt=""
+        onClick={() => chooseSticker(path)}
+      />
+    );
+  };
+  render() {
+    return (
       <div>
-        <img
-          src="images/sticker-1.png"
-          width="100px"
-          height="100px"
-          alt=""
-          onClick={() => chooseSticker('images/sticker-1.png')}
-        />
-        <img
-          src="images/sticker-2.png"
-          width="100px"
-          height="100px"
-          alt=""
-          onClick={() => chooseSticker('images/sticker-2.png')}
-        />
-        <img
-          src="images/sticker-3.png"
-          width="100px"
-          height="100px"
-          alt=""
-          onClick={() => chooseSticker('images/sticker-3.png')}
-        />
-        <img
-          src="images/sticker-4.png"
-          width="100px"
-          height="100px"
-          alt=""
-          onClick={() => chooseSticker('images/sticker-4.png')}
-        />
-        <img
-          src="images/sticker-5.png"
-          width="100px"
-          height="100px"
-          alt=""
-          onClick={() => chooseSticker('images/sticker-5.png')}
-        />
+        {this.renderSticker('images/sticker-1.png')}
+        {this.renderSticker('images/sticker-2.png')}
+        {this.renderSticker('images/sticker-3.png')}
+        {this.renderSticker('images/sticker-4.png')}
+        {this.renderSticker('images/sticker-5.png')}
       </div>
     );
   }

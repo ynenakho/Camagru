@@ -1,6 +1,5 @@
 const authController = require('../controllers/authController');
 const pictureController = require('../controllers/pictureController');
-const mainController = require('../controllers/mainController');
 const passport = require('passport');
 require('../services/passport');
 
@@ -19,7 +18,6 @@ module.exports = app => {
   app.post('/api/resend', authController.resendTokenPost);
 
   // Picture routes
-  app.get('/api/picture/mine', requireAuth, pictureController.picturesMyGet);
   app.post('/api/picture/save', requireAuth, pictureController.savePicturePost);
   app.delete(
     '/api/picture/delete/:id',
@@ -31,6 +29,16 @@ module.exports = app => {
     requireAuth,
     pictureController.pictureLikePost
   );
-  // Main routes
-  app.get('/api/main/all', mainController.picturesAllGet);
+  app.post(
+    '/api/picture/comment/:id',
+    requireAuth,
+    pictureController.addCommentPost
+  );
+  app.delete(
+    '/api/picture/comment/delete/:id/:comment_id',
+    requireAuth,
+    pictureController.commentDelete
+  );
+  app.get('/api/picture/all', requireAuth, pictureController.picturesAllGet);
+  app.get('/api/picture/five', pictureController.picturesFiveGet);
 };

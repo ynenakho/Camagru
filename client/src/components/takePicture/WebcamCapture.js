@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import Webcam from 'react-webcam';
 import Canvas from './Canvas';
 import { connect } from 'react-redux';
+import Frames from './Frames';
+import Stickers from './Stickers';
 import * as editPictureActions from '../../actions/editPictureActions';
+import * as mainActions from '../../actions/mainActions';
+import Button from '../common/Button';
 
 class WebcamCapture extends Component {
   state = {
@@ -13,6 +17,13 @@ class WebcamCapture extends Component {
     this.webcam = webcam;
   };
 
+  savePhoto = () => {
+    const { savePictureToServer, canvas } = this.props;
+    savePictureToServer(canvas);
+    this.clearChanges();
+    // this.resetPhoto();
+  };
+
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
     this.setState({
@@ -21,12 +32,12 @@ class WebcamCapture extends Component {
   };
 
   clearChanges = () => {
-    this.props.addStickerCoords([]);
+    this.props.clearCoords();
     this.props.changeFrame('');
   };
 
   resetPhoto = () => {
-    this.props.clearPicture();
+    this.props.resetPicture();
     this.setState({
       imageSrc: ''
     });
@@ -63,26 +74,29 @@ class WebcamCapture extends Component {
   };
 
   renderButtons = () => {
-    const { savePictureToServer } = this.props;
     if (!this.state.imageSrc) {
       return (
-        <button
-          className="btn grey lighten-4 black-text"
-          onClick={this.capture}
-        >
-          Capture photo
-        </button>
+        <Button func={this.capture} name="Take photo" />
+        // <button
+        //   className="btn grey lighten-4 black-text"
+        //   onClick={this.capture}
+        // >
+        //   Capture photo
+        // </button>
       );
     } else {
       return (
-        <div>
-          <button
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button func={this.resetPhoto} name="Retake photo" />
+          <Button func={this.clearChanges} name="Clear" />
+          <Button func={this.savePhoto} name="Save photo" />
+          {/* <button
             className="btn grey lighten-4 black-text"
             onClick={() => this.resetPhoto()}
           >
-            Reset
-          </button>
-          <button
+            Retake photo
+          </button> */}
+          {/* <button
             className="btn grey lighten-4 black-text"
             onClick={() => this.clearChanges()}
           >
@@ -91,12 +105,22 @@ class WebcamCapture extends Component {
           <button
             className="btn grey lighten-4 black-text"
             onClick={() => {
-              savePictureToServer(this.props.canvas);
-              this.resetPhoto();
+              this.savePhoto();
             }}
           >
             Save photo
-          </button>
+          </button> */}
+        </div>
+      );
+    }
+  };
+
+  renderEdits = () => {
+    if (this.state.imageSrc) {
+      return (
+        <div>
+          <Frames />
+          <Stickers />
         </div>
       );
     }
@@ -107,6 +131,7 @@ class WebcamCapture extends Component {
       <div className="">
         {this.renderWebcam()}
         {this.renderButtons()}
+        {this.renderEdits()}
       </div>
     );
   }
@@ -118,5 +143,8 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  editPictureActions
+  {
+    ...editPictureActions,
+    ...mainActions
+  }
 )(WebcamCapture);

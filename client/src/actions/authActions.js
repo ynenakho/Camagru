@@ -19,10 +19,10 @@ export const updateProfile = (userData, callback) => dispatch =>
     .catch(e => {
       dispatch({
         type: AUTH_ERROR,
-        payload: e.response.data.error
+        payload: e.response.data
       });
       throw new SubmissionError({
-        _error: e.response.data.error
+        _error: e.response.data
       });
     });
 
@@ -38,7 +38,7 @@ export const setCurrentUser = () => dispatch => {
     .catch(e =>
       dispatch({
         type: USER_ERROR,
-        payload: e.response.data.error
+        payload: e.response.data
       })
     );
 };
@@ -61,7 +61,7 @@ export const signup = ({ email, password, username }, callback) => dispatch =>
     .catch(e => {
       dispatch({
         type: AUTH_ERROR,
-        payload: e.response.data.error
+        payload: e.response.data
       });
       throw new SubmissionError({
         _error: e.response.data.error
@@ -87,7 +87,7 @@ export const signin = ({ username, password }, callback) => dispatch =>
     .catch(e => {
       dispatch({
         type: AUTH_ERROR,
-        payload: e.response.data.error
+        payload: e.response.data
       });
       throw new SubmissionError({
         _error: 'Incorrect Username/Password.'
@@ -114,7 +114,7 @@ export const forgotPassword = ({ email }, callback) => dispatch =>
     .catch(e => {
       dispatch({
         type: AUTH_ERROR,
-        payload: e.response.data.error
+        payload: e.response.data
       });
       throw new SubmissionError({
         _error: e.response.data.error

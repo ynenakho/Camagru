@@ -58,17 +58,8 @@ class Canvas extends Component {
   };
 
   getStickerPos = (stickerX, stickerY, oldWidth, oldHeight) => {
-    const rect = this.canvas.getBoundingClientRect();
-
-    let x = (stickerX / oldWidth) * this.canvas.width;
-    let y = (stickerY / oldHeight) * this.canvas.height;
-
-    // const width = rect.right - rect.left;
-    // if (this.canvas.width !== width) {
-    //   const height = rect.bottom - rect.top;
-    //   x = x * (this.canvas.width / width);
-    //   y = y * (this.canvas.height / height);
-    // }
+    const x = (stickerX / oldWidth) * this.canvas.width;
+    const y = (stickerY / oldHeight) * this.canvas.height;
     return { x, y };
   };
 

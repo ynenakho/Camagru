@@ -3,11 +3,11 @@ const { Schema } = mongoose;
 
 const pictureSchema = new Schema({
   _userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-  picturename: { type: String, required: true },
+  picturePath: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now },
   likes: [
     {
-      user: {
+      _userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
       }
@@ -15,9 +15,13 @@ const pictureSchema = new Schema({
   ],
   comments: [
     {
-      user: {
+      _userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+      },
+      userName: {
+        type: String,
+        required: true
       },
       text: {
         type: String,

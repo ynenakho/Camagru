@@ -1,60 +1,54 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import * as mainActions from '../../actions/mainActions';
+import Comments from './Comments';
+import DeleteButton from '../common/DeleteButton';
+import LikeButton from '../common/LikeButton';
+import Button from '../common/Button';
 
 export class PictureDiv extends Component {
-  findUserLike() {
-    const {
-      auth,
-      picture: { likes }
-    } = this.props;
-    if (
-      auth.user &&
-      likes.filter(like => like.user === auth.user.id).length > 0
-    ) {
-      return true;
-    } else {
-      return false;
+  state = {
+    showComments: false
+  };
+
+  toggleShowComments = () => {
+    const { showComments } = this.state;
+    this.setState({
+      showComments: !showComments
+    });
+  };
+
+  renderComments = () => {
+    const { showComments } = this.state;
+    const { picture } = this.props;
+    if (showComments) {
+      return <Comments picture={picture} />;
     }
-  }
+  };
 
   renderButtons() {
-    const { picture, auth } = this.props;
+    const { picture, auth, likePicture, deletePictureLanding } = this.props;
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '10px'
-        }}
-      >
-        <button
-          disabled={!auth.user}
-          onClick={async () => {
-            await this.props.likePicture(picture._id, auth.user.id);
-            this.forceUpdate();
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginBottom: '10px'
           }}
-          type="button"
-          className="btn blue lighten-3"
         >
-          <i
-            className={classnames('fas fa-thumbs-up', {
-              'blue-text': this.findUserLike()
-            })}
+          <LikeButton
+            likePicture={likePicture}
+            auth={auth}
+            picture={picture}
+            pictureId={picture._id}
           />
-          <span style={{ marginLeft: '5px' }}>{picture.likes.length}</span>
-        </button>
-        <button className="btn">COMMENTS</button>
-        {auth.user && auth.user.id === picture._userId ? (
-          <button
-            onClick={() => this.props.deletePicture(picture._id)}
-            type="button"
-            className="btn"
-          >
-            <i className="fas fa-times" />
-          </button>
-        ) : null}
+          <Button func={this.toggleShowComments} name="Comments" />
+          {auth.authenticated && auth.user.id === picture._userId ? (
+            <DeleteButton func={deletePictureLanding} item={picture._id} />
+          ) : null}
+        </div>
+        {this.renderComments()}
       </div>
     );
   }
@@ -65,7 +59,7 @@ export class PictureDiv extends Component {
       <div>
         <img
           width="100%"
-          src={picture.picturename}
+          src={picture.picturePath}
           alt=""
           key={picture._id}
           // onClick={() => this.props.getPictureDetailsView(picture._id, () => this.props.push('/'))}
