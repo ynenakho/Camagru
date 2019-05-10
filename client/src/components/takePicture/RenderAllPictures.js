@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import * as editPictureActions from '../../actions/editPictureActions';
+
 import RenderPicture from './RenderPicture';
 
 export class RenderAllPictures extends Component {
@@ -21,7 +21,4 @@ const mapStateToProps = state => ({
   pictures: state.main.pictures
 });
 
-export default connect(
-  mapStateToProps
-  // editPictureActions
-)(RenderAllPictures);
+export default connect(mapStateToProps)(RenderAllPictures);

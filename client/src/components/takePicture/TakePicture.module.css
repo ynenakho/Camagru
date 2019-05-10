@@ -1,0 +1,29 @@
+.camButtonsDiv {
+  display: flex;
+  justify-content: space-between;
+}
+
+.underPicButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.carouselMain {
+  height: 150px;
+}
+
+.carouselItem {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.carouselImage {
+  cursor: pointer;
+}
+
+.stickerImage {
+  cursor: pointer;
+}

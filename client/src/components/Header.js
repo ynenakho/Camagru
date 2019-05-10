@@ -14,7 +14,7 @@ class Header extends Component {
       return (
         <ul className="right hide-on-med-and-down">
           <li>
-            <Link to="/picture">Make Picture</Link>
+            <Link to="/picture">Take Picture</Link>
           </li>
           <li>
             <Link to="/signout">Sign Out</Link>
@@ -36,12 +36,16 @@ class Header extends Component {
   };
 
   renderSideLinks = () => {
-    if (this.props.authenticated) {
+    const { authenticated, user } = this.props;
+    if (authenticated) {
       return (
         <>
           <li>
+            <Link to="#">Hello {user.username}</Link>
+          </li>
+          <li>
             <Link className="sidenav-close" to="/picture">
-              Make Picture
+              Take Picture
             </Link>
           </li>
           <li>
@@ -118,7 +122,8 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  authenticated: state.auth.authenticated
+  authenticated: state.auth.authenticated,
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps)(Header);

@@ -2,14 +2,10 @@ import React from 'react';
 import classnames from 'classnames';
 
 const findUserLike = (auth, likes) => {
-  if (
-    auth.user &&
+  return auth.user &&
     likes.filter(like => like._userId === auth.user.id).length > 0
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+    ? true
+    : false;
 };
 
 const LikeButton = ({ likePicture, auth, picture, pictureId }) => {

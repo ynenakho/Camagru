@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as editPictureActions from '../../actions/editPictureActions';
+import styles from './TakePicture.module.css';
 
 export class Stickers extends Component {
   renderSticker = path => {
     const { chooseSticker } = this.props;
     return (
       <img
+        className={styles.stickerImage}
         src={path}
         width="100px"
         height="100px"

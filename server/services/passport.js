@@ -5,8 +5,7 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const keys = require('../config/keys');
 
-const localOptions = {}; //{ usernameField: 'username', passwordField: 'password' };
-
+const localOptions = {};
 const localLogin = new LocalStrategy(
   localOptions,
   (username, password, done) => {

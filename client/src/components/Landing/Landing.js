@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as mainActions from '../../actions/mainActions';
+
 import PictureDiv from './PictureDiv';
 import Button from '../common/Button';
+import * as mainActions from '../../actions/mainActions';
+import styles from './Landing.module.css';
 
 export class Landing extends Component {
   state = {
     page: 0
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const { getFivePictures } = this.props;
     const { page } = this.state;
-    await getFivePictures(page);
+    getFivePictures(page);
   }
 
-  async componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     const { getFivePictures } = this.props;
     const { page } = this.state;
     if (prevProps.pictures.length !== this.props.pictures.length) {
-      await getFivePictures(page);
+      getFivePictures(page);
     }
   }
 
   renderPictures = () => {
-    const { pictures, auth } = this.props;
+    const { pictures } = this.props;
     return pictures.map(picture => (
-      <PictureDiv picture={picture} auth={auth} key={picture._id} />
+      <PictureDiv picture={picture} key={picture._id} />
     ));
   };
 
@@ -53,7 +55,7 @@ export class Landing extends Component {
   renderArrows = () => {
     const { page } = this.state;
     return (
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div className={styles.prevNextDiv}>
         <Button name="Prev" func={this.prevPage} />
         <h5>{page + 1}</h5>
         <Button name="Next" func={this.nextPage} />
@@ -78,7 +80,6 @@ export class Landing extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
   pictures: state.main.picturesFive
 });
 

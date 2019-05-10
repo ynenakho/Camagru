@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import { reduxForm, Field, reset } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as authActions from '../../actions/authActions';
-import renderField from '../common/renderField';
-// import M from 'materialize-css';
 import { Link } from 'react-router-dom';
-// import './SignIn.css';
+
+import renderField from '../common/renderField';
+import AuthButton from '../common/AuthButton';
+import * as authActions from '../../actions/authActions';
+import styles from '../common/AuthButton.module.css';
 
 class SignIn extends Component {
   onSubmit = formValues => {
-    return this.props.signin(formValues, () => {
-      this.props.history.push('/');
+    const { signin, history } = this.props;
+    return signin(formValues, () => {
+      history.push('/');
     });
   };
 
@@ -42,29 +44,13 @@ class SignIn extends Component {
                     component={renderField}
                   />
                   {error && <div style={{ color: 'red' }}>{error}</div>}
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="btn btn-extended grey lighten-4 black-text"
-                    style={{
-                      display: 'block',
-                      width: '80%',
-                      margin: 'auto',
-                      marginTop: '20px'
-                    }}
-                  >
-                    LOGIN
-                  </button>
+                  <AuthButton submitting={submitting} name="Login" />
                   <Link
                     to="/forgotpassword"
                     disabled={submitting}
-                    className="btn btn-extended grey lighten-4 black-text"
-                    style={{
-                      display: 'block',
-                      width: '80%',
-                      margin: 'auto',
-                      marginTop: '20px'
-                    }}
+                    className={`btn btn-extended grey lighten-4 black-text ${
+                      styles.authbutton
+                    }`}
                   >
                     FORGOT PASSWORD
                   </Link>
@@ -78,7 +64,7 @@ class SignIn extends Component {
   }
 }
 
-const validate = ({ username, email, password }) => {
+const validate = ({ username, password }) => {
   const errors = {};
 
   if (!password) {
@@ -90,11 +76,9 @@ const validate = ({ username, email, password }) => {
   return errors;
 };
 
-const mapStateToProps = state => {
-  return {
-    errorMessage: state.auth.errorMessage
-  };
-};
+const mapStateToProps = state => ({
+  errorMessage: state.auth.errorMessage
+});
 
 const afterSubmit = (result, dispatch) => dispatch(reset('signIn'));
 

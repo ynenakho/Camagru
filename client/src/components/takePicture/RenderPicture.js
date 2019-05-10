@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
-// import classnames from 'classnames';
 import { connect } from 'react-redux';
-// import * as editPictureActions from '../../actions/editPictureActions';
-import * as mainActions from '../../actions/mainActions';
+
 import DeleteButton from '../common/DeleteButton';
 import LikeButton from '../common/LikeButton';
+import * as mainActions from '../../actions/mainActions';
+import styles from './TakePicture.module.css';
 
 export class RenderPicture extends Component {
   renderButtons() {
-    const { picture, auth } = this.props;
+    const { picture, auth, likePicture, deletePicture } = this.props;
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '10px'
-        }}
-      >
+      <div className={styles.underPicButtons}>
         <LikeButton
-          likePicture={this.props.likePicture}
+          likePicture={likePicture}
           auth={auth}
           picture={picture}
           pictureId={picture._id}
         />
-        <DeleteButton func={this.props.deletePicture} item={picture._id} />
+        <DeleteButton func={deletePicture} item={picture._id} />
       </div>
     );
   }

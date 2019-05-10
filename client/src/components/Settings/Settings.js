@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as authActions from '../actions/authActions';
 import M from 'materialize-css';
-// import { Link } from 'react-router-dom';
-import renderField from './common/renderField';
+
+import renderField from '../common/renderField';
+import * as authActions from '../../actions/authActions';
+import styles from './Settings.module.css';
 
 class Settings extends Component {
   componentDidMount() {
@@ -13,7 +14,8 @@ class Settings extends Component {
   }
 
   onSubmit = formValues => {
-    return this.props.updateProfile(formValues, () => {
+    const { updateProfile } = this.props;
+    return updateProfile(formValues, () => {
       this.modalTrigger.open();
     });
   };
@@ -44,7 +46,6 @@ class Settings extends Component {
               <form onSubmit={handleSubmit(this.onSubmit)}>
                 <Field
                   labelColor="blue-text"
-                  // label="Username"
                   icon="account_box"
                   name="username"
                   type="text"
@@ -52,7 +53,6 @@ class Settings extends Component {
                 />
                 <Field
                   labelColor="blue-text"
-                  // label="Email"
                   icon="email"
                   name="email"
                   type="text"
@@ -83,13 +83,9 @@ class Settings extends Component {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn btn-extended blue lighten-2 black-text"
-                  style={{
-                    display: 'block',
-                    width: '60%',
-                    margin: 'auto',
-                    marginTop: '60px'
-                  }}
+                  className={`btn btn-extended blue lighten-2 black-text ${
+                    styles.button
+                  }`}
                 >
                   SUBMIT
                 </button>

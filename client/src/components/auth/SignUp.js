@@ -6,13 +6,16 @@ import * as authActions from '../../actions/authActions';
 import M from 'materialize-css';
 import { Link } from 'react-router-dom';
 import renderField from '../common/renderField';
+import AuthButton from '../common/AuthButton';
 
 class SignUp extends Component {
   componentDidMount() {
     this.modalTrigger = M.Modal.init(this.modal);
   }
+
   onSubmit = formValues => {
-    return this.props.signup(formValues, () => {
+    const { signup } = this.props;
+    return signup(formValues, () => {
       this.modalTrigger.open();
     });
   };
@@ -21,7 +24,7 @@ class SignUp extends Component {
     const { handleSubmit, submitting, error } = this.props;
     return (
       <>
-        <div className="section section-login">
+        <div className="section section-signup">
           <div className="container">
             <div className="row">
               <div className="col s12 m8 offset-m2 l6 offset-l3">
@@ -53,19 +56,7 @@ class SignUp extends Component {
                       component={renderField}
                     />
                     {error && <div style={{ color: 'red' }}>{error}</div>}
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="btn btn-extended grey lighten-4 black-text"
-                      style={{
-                        display: 'block',
-                        width: '80%',
-                        margin: 'auto',
-                        marginTop: '20px'
-                      }}
-                    >
-                      SIGN UP
-                    </button>
+                    <AuthButton submitting={submitting} name="sign up" />
                   </form>
                 </div>
               </div>
@@ -115,12 +106,9 @@ const validate = ({ username, email, password }) => {
   return errors;
 };
 
-const mapStateToProps = state => {
-  return {
-    errorMessage: state.auth.errorMessage
-  };
-};
-
+const mapStateToProps = state => ({
+  errorMessage: state.auth.errorMessage
+});
 const afterSubmit = (result, dispatch) => dispatch(reset('signUp'));
 
 export default compose(

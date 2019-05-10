@@ -7,28 +7,22 @@ import Stickers from './Stickers';
 import * as editPictureActions from '../../actions/editPictureActions';
 import * as mainActions from '../../actions/mainActions';
 import Button from '../common/Button';
+import styles from './TakePicture.module.css';
 
 class WebcamCapture extends Component {
-  state = {
-    imageSrc: ''
-  };
+  state = { imageSrc: '' };
 
-  setRef = webcam => {
-    this.webcam = webcam;
-  };
+  setRef = webcam => (this.webcam = webcam);
 
   savePhoto = () => {
     const { savePictureToServer, canvas } = this.props;
     savePictureToServer(canvas);
     this.clearChanges();
-    // this.resetPhoto();
   };
 
   capture = () => {
     const imageSrc = this.webcam.getScreenshot();
-    this.setState({
-      imageSrc
-    });
+    this.setState({ imageSrc });
   };
 
   clearChanges = () => {
@@ -38,9 +32,7 @@ class WebcamCapture extends Component {
 
   resetPhoto = () => {
     this.props.resetPicture();
-    this.setState({
-      imageSrc: ''
-    });
+    this.setState({ imageSrc: '' });
   };
 
   renderWebcam = () => {
@@ -75,41 +67,13 @@ class WebcamCapture extends Component {
 
   renderButtons = () => {
     if (!this.state.imageSrc) {
-      return (
-        <Button func={this.capture} name="Take photo" />
-        // <button
-        //   className="btn grey lighten-4 black-text"
-        //   onClick={this.capture}
-        // >
-        //   Capture photo
-        // </button>
-      );
+      return <Button func={this.capture} name="Take photo" />;
     } else {
       return (
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className={styles.camButtonsDiv}>
           <Button func={this.resetPhoto} name="Retake photo" />
           <Button func={this.clearChanges} name="Clear" />
           <Button func={this.savePhoto} name="Save photo" />
-          {/* <button
-            className="btn grey lighten-4 black-text"
-            onClick={() => this.resetPhoto()}
-          >
-            Retake photo
-          </button> */}
-          {/* <button
-            className="btn grey lighten-4 black-text"
-            onClick={() => this.clearChanges()}
-          >
-            Clear
-          </button>
-          <button
-            className="btn grey lighten-4 black-text"
-            onClick={() => {
-              this.savePhoto();
-            }}
-          >
-            Save photo
-          </button> */}
         </div>
       );
     }

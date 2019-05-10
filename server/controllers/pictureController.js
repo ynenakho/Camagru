@@ -5,7 +5,7 @@ const keys = require('../config/keys');
 const sgMail = require('@sendgrid/mail');
 
 exports.picturesAllGet = (req, res, next) => {
-  Picture.find({})
+  Picture.find({ _userId: req.user.id })
     .sort([['createdAt', -1]])
     .exec((err, pictures) => {
       if (err) return next(err);
@@ -24,7 +24,7 @@ exports.picturesFiveGet = (req, res, next) => {
     });
 };
 
-exports.commentDelete = (req, res, next) => {
+exports.commentDelete = (req, res) => {
   Picture.findById(req.params.id)
     .then(picture => {
       // Check to see if th comment exists
@@ -33,9 +33,7 @@ exports.commentDelete = (req, res, next) => {
           comment => comment._id.toString() === req.params.comment_id
         ).length === 0
       ) {
-        return res
-          .status(404)
-          .json({ commentNotExists: 'Comment does not exists' });
+        return res.status(404).json({ error: 'Comment does not exists' });
       }
 
       // Get remove index
@@ -47,9 +45,7 @@ exports.commentDelete = (req, res, next) => {
       picture.comments.splice(removeIndex, 1);
       picture.save().then(picture => res.json(picture));
     })
-    .catch(err =>
-      res.status(404).json({ pictureNotFound: 'picture not found' })
-    );
+    .catch(err => res.status(404).json({ error: 'Picture not found' }));
 };
 
 exports.addCommentPost = (req, res, next) => {
@@ -81,26 +77,17 @@ exports.addCommentPost = (req, res, next) => {
               };
               sgMail.send(mailOptions, err => {
                 if (err) return next(err);
-                // res.send({
-                //   message: `An email about new comment has been sent to ${
-                //     user.email
-                //   }.`
-                // });
               });
             }
           })
-          .catch(err =>
-            res.status(404).json({ userNotFound: 'User not found' })
-          );
+          .catch(err => res.status(404).json({ error: 'User not found' }));
         res.json(picture);
       });
     })
-    .catch(err =>
-      res.status(404).json({ pictureNotFound: 'Picture not found' })
-    );
+    .catch(err => res.status(404).json({ error: 'Picture not found' }));
 };
 
-exports.pictureLikePost = (req, res, next) => {
+exports.pictureLikePost = (req, res) => {
   Picture.findById(req.params.id)
     .then(picture => {
       if (
@@ -148,10 +135,8 @@ exports.savePicturePost = (req, res, next) => {
 
   const base64Data = picturePath.replace(/^data:image\/png;base64,/, '');
   const filePath = `uploads/${username}-${new Date().getTime()}.png`;
-  fs.writeFile(filePath, base64Data, 'base64', function(err) {
-    if (err) {
-      console.log(err);
-    }
+  fs.writeFile(filePath, base64Data, 'base64', err => {
+    if (err) console.log(err);
   });
 
   const newPicture = new Picture({

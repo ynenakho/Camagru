@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import WebcamCapture from './WebcamCapture';
-// import Frames from './Frames';
-// import Stickers from './Stickers';
 import Sticker from './Sticker';
 import RenderAllPictures from './RenderAllPictures';
 import { connect } from 'react-redux';
@@ -9,22 +7,13 @@ import * as editPictureActions from '../../actions/editPictureActions';
 import * as mainActions from '../../actions/mainActions';
 
 class TakePicture extends Component {
-  state = {
-    x: 0,
-    y: 0
-  };
+  state = { x: 0, y: 0 };
 
-  async componentWillMount() {
+  componentDidMount() {
     const { getAllPictures } = this.props;
-    await getAllPictures();
+    getAllPictures();
     this.selectedSticker = document.querySelector('#sticker');
   }
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.sticker !== this.props.sticker && this.props.sticker) {
-  //     this.selectedSticker = document.querySelector('#sticker');
-  //   }
-  // }
 
   _onMouseMove = e => {
     const { pageX, pageY } = e.nativeEvent;
@@ -57,12 +46,10 @@ class TakePicture extends Component {
         onClick={this.handleClick}
       >
         <Sticker />
-        <div className="row" style={{ margin: 0 }}>
+        <div className="row">
           <div className="col s12 m8">
             <div className="card-panel blue darken-2 white-text center">
               <WebcamCapture />
-              {/* <Frames />
-              <Stickers /> */}
             </div>
           </div>
           <div className="col s12 m4">

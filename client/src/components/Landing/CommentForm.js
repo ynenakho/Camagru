@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field, reset } from 'redux-form';
+
 import * as mainActions from '../../actions/mainActions';
 
 export class CommentForm extends Component {
@@ -36,15 +37,11 @@ export class CommentForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  // auth: state.auth
-});
-
 const afterSubmit = (result, dispatch) => dispatch(reset('commentForm'));
 
 export default compose(
   connect(
-    mapStateToProps,
+    null,
     mainActions
   ),
   reduxForm({ form: 'commentForm', onSubmitSuccess: afterSubmit })

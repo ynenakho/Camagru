@@ -1,0 +1,10 @@
+.buttonsDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.prevNextDiv {
+  display: flex;
+  justify-content: space-around;
+}

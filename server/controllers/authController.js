@@ -12,7 +12,7 @@ const tokenForUser = user => {
   return jwt.encode({ sub: user.id, iat: timestamp }, keys.jwtTokenSecret);
 };
 
-exports.currentGet = (req, res, next) => {
+exports.currentGet = (req, res) => {
   res.json({
     id: req.user.id,
     username: req.user.username,
@@ -96,7 +96,7 @@ exports.updateProfilePost = (req, res, next) => {
   });
 };
 
-exports.signinPost = (req, res, next) => {
+exports.signinPost = (req, res) => {
   res.json({ token: tokenForUser(req.user) });
 };
 
@@ -188,7 +188,8 @@ exports.confirmationGet = (req, res, next) => {
         existingUser.isVerified = true;
         existingUser.save(err => {
           if (err) return next(err);
-          res.status(301).redirect(keys.clientURI + '/signin');
+          if (process.env.NODE_ENV !== 'production')
+            res.status(301).redirect(keys.clientURI + '/signin');
         });
       }
     );

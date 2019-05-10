@@ -6,7 +6,7 @@ import App from './components/App';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import SignOut from './components/auth/SignOut';
-import Settings from './components/Settings';
+import Settings from './components/Settings/Settings';
 import TakePicture from './components/takePicture/TakePicture';
 import ForgotPassword from './components/auth/ForgotPassword';
 import PrivateRoute from './components/common/PrivateRoute';

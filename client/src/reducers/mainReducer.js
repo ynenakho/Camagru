@@ -36,8 +36,6 @@ const getNewState = (state, pic) => {
 
 export default (state = INITIAL_STATE, action) => {
   let newState;
-  // let pictures;
-  // let picturesFive;
   switch (action.type) {
     case MAIN_ADD_COMMENT:
       newState = getNewState(state, action.payload);

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import * as editPictureActions from '../../actions/editPictureActions';
 
 class Canvas extends Component {
   componentDidMount() {
     this.ctx = this.canvas.getContext('2d');
-
     this.background.onload = () => {
       this.canvas.width = this.background.width;
       this.canvas.height = this.background.height;
@@ -100,16 +100,11 @@ class Canvas extends Component {
         <canvas
           onClick={e => this.handleClick(e)}
           ref={canvas => (this.canvas = canvas)}
-          style={{
-            width: '100%',
-            style: '100%'
-          }}
+          style={{ width: '100%' }}
         />
         <img
           ref={background => (this.background = background)}
-          style={{
-            display: 'none'
-          }}
+          style={{ display: 'none' }}
           src={this.props.image}
           alt="background"
         />

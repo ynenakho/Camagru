@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as mainActions from '../../actions/mainActions';
+
 import Comments from './Comments';
 import DeleteButton from '../common/DeleteButton';
 import LikeButton from '../common/LikeButton';
 import Button from '../common/Button';
+import * as mainActions from '../../actions/mainActions';
+import styles from './Landing.module.css';
 
 export class PictureDiv extends Component {
-  state = {
-    showComments: false
-  };
+  state = { showComments: false };
 
   toggleShowComments = () => {
     const { showComments } = this.state;
@@ -30,13 +30,7 @@ export class PictureDiv extends Component {
     const { picture, auth, likePicture, deletePictureLanding } = this.props;
     return (
       <div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px'
-          }}
-        >
+        <div className={styles.buttonsDiv}>
           <LikeButton
             likePicture={likePicture}
             auth={auth}
@@ -44,7 +38,9 @@ export class PictureDiv extends Component {
             pictureId={picture._id}
           />
           <Button func={this.toggleShowComments} name="Comments" />
-          {auth.authenticated && auth.user.id === picture._userId ? (
+          {auth.authenticated &&
+          auth.user &&
+          picture._userId === auth.user.id ? (
             <DeleteButton func={deletePictureLanding} item={picture._id} />
           ) : null}
         </div>
@@ -57,20 +53,16 @@ export class PictureDiv extends Component {
     const { picture } = this.props;
     return (
       <div>
-        <img
-          width="100%"
-          src={picture.picturePath}
-          alt=""
-          key={picture._id}
-          // onClick={() => this.props.getPictureDetailsView(picture._id, () => this.props.push('/'))}
-        />
+        <img width="100%" src={picture.picturePath} alt="" key={picture._id} />
         {this.renderButtons()}
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(
   mapStateToProps,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import CommentForm from './CommentForm';
 import * as mainActions from '../../actions/mainActions';
 

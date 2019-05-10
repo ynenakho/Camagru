@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import * as authActions from '../../actions/authActions';
-import renderField from '../common/renderField';
-import M from 'materialize-css';
 import { Link } from 'react-router-dom';
+import M from 'materialize-css';
+
+import renderField from '../common/renderField';
+import AuthButton from '../common/AuthButton';
+import * as authActions from '../../actions/authActions';
 
 class ForgotPassword extends Component {
   componentDidMount() {
@@ -39,19 +41,7 @@ class ForgotPassword extends Component {
                       component={renderField}
                     />
                     {error && <div style={{ color: 'red' }}>{error}</div>}
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="btn btn-extended grey lighten-4 black-text"
-                      style={{
-                        display: 'block',
-                        width: '80%',
-                        margin: 'auto',
-                        marginTop: '20px'
-                      }}
-                    >
-                      SUBMIT
-                    </button>
+                    <AuthButton submitting={submitting} name="submit" />
                   </form>
                 </div>
               </div>

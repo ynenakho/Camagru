@@ -26,15 +26,19 @@ export const updateProfile = (userData, callback) => dispatch =>
       });
     });
 
-export const setCurrentUser = () => dispatch => {
+export const setCurrentUser = token => dispatch => {
   axios
     .get('/api/current')
-    .then(response =>
+    .then(response => {
       dispatch({
         type: GET_CURRENT_USER,
         payload: response.data
-      })
-    )
+      });
+      dispatch({
+        type: AUTH_USER,
+        payload: token
+      });
+    })
     .catch(e =>
       dispatch({
         type: USER_ERROR,
@@ -50,14 +54,7 @@ export const signup = ({ email, password, username }, callback) => dispatch =>
       password,
       username
     })
-    .then(response => {
-      // dispatch({
-      //   type: AUTH_USER,
-      //   payload: response.data.token
-      // });
-      // localStorage.setItem('jwtToken', 'Bearer ' + response.data.token);
-      callback();
-    })
+    .then(() => callback())
     .catch(e => {
       dispatch({
         type: AUTH_ERROR,
@@ -81,7 +78,7 @@ export const signin = ({ username, password }, callback) => dispatch =>
       });
       localStorage.setItem('jwtToken', response.data.token);
       setAuthToken(response.data.token);
-      dispatch(setCurrentUser());
+      dispatch(setCurrentUser(response.data.token));
       callback();
     })
     .catch(e => {
