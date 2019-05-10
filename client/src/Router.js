@@ -17,12 +17,12 @@ export class Router extends Component {
       <BrowserRouter>
         <App>
           <Route path="/" exact component={Landing} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/signout" component={SignOut} />
-          <Route path="/forgotpassword" component={ForgotPassword} />
-          <PrivateRoute path="/settings" component={Settings} />
-          <PrivateRoute path="/picture" component={TakePicture} />
+          <Route path="/signin" exact component={SignIn} />
+          <Route path="/signup" exact component={SignUp} />
+          <Route path="/signout" exact component={SignOut} />
+          <Route path="/forgotpassword" exact component={ForgotPassword} />
+          <PrivateRoute path="/settings" exact component={Settings} />
+          <PrivateRoute path="/picture" exact component={TakePicture} />
         </App>
       </BrowserRouter>
     );
