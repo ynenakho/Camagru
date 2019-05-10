@@ -13,7 +13,7 @@ export const updateProfile = (userData, callback) => dispatch =>
       });
       localStorage.setItem('jwtToken', response.data.token);
       setAuthToken(response.data.token);
-      dispatch(setCurrentUser());
+      dispatch(setCurrentUser(response.data.token));
       callback();
     })
     .catch(e => {
@@ -22,7 +22,7 @@ export const updateProfile = (userData, callback) => dispatch =>
         payload: e.response.data
       });
       throw new SubmissionError({
-        _error: e.response.data
+        _error: e.response.data.error
       });
     });
 
