@@ -146,7 +146,7 @@ exports.signupPost = (req, res, next) => {
           subject: 'Account Verification Token',
           text: `Hello, ${username}\n
           Please verify your account by clicking the link:
-          http://${req.headers.host}/api/confirmation?token=${
+          https://${req.headers.host}/api/confirmation?token=${
             verificationToken.token
           }&email=${email}.`
         };
@@ -229,7 +229,9 @@ exports.resendTokenPost = (req, res, next) => {
         text: `Hello, ${existingUser.username}
         
         Please verify your account by clicking the link:
-        http://${req.headers.host}/api/confirmation/${verificationToken.token}.`
+        https://${req.headers.host}/api/confirmation?token=${
+          verificationToken.token
+        }&email=${email}.`
       };
       sgMail.send(mailOptions, err => {
         if (err) return next(err);
