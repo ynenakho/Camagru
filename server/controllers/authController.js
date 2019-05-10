@@ -188,8 +188,7 @@ exports.confirmationGet = (req, res, next) => {
         existingUser.isVerified = true;
         existingUser.save(err => {
           if (err) return next(err);
-          if (process.env.NODE_ENV !== 'production')
-            res.status(301).redirect(keys.clientURI + '/signin');
+          res.status(301).redirect(keys.clientURI + '/signin');
         });
       }
     );
