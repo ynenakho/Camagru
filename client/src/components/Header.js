@@ -87,7 +87,11 @@ class Header extends Component {
         <nav className="blue darken-2">
           <div className="container">
             <div className="nav-wrapper">
-              <Link to="/" className="brand-logo">
+              <Link
+                to="#"
+                className="brand-logo"
+                onClick={() => this.props.history.push('/')}
+              >
                 Camagru
               </Link>
               <a
@@ -107,7 +111,11 @@ class Header extends Component {
           ref={sidenav => (this.sidenav = sidenav)}
         >
           <li>
-            <Link className="sidenav-close" to="/">
+            <Link
+              className="sidenav-close"
+              to="#"
+              onClick={() => this.props.history.push('/')}
+            >
               Camagru
             </Link>
           </li>
