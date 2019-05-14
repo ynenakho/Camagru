@@ -131,7 +131,7 @@ export const deletePicture = pictureId => dispatch => {
 
 export const savePictureToServer = picturePath => dispatch => {
   axios
-    .post('/api/picture/save', { picturePath })
+    .post('/api/picture/upload', { picturePath })
     .then(response => {
       dispatch({
         type: MAIN_SAVE_PICTURE,
