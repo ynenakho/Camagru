@@ -1,4 +1,5 @@
 const authController = require('../controllers/authController');
+const awsController = require('../controllers/awsController');
 const pictureController = require('../controllers/pictureController');
 const passport = require('passport');
 require('../services/passport');
@@ -7,6 +8,14 @@ const requireSignin = passport.authenticate('local', { session: false });
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 module.exports = app => {
+  // AWS s3 routes
+  app.post('/api/picture/upload', requireAuth, awsController.uploadPicturePost);
+  app.delete(
+    '/api/picture/delete/:id',
+    requireAuth,
+    awsController.pictureDelete
+  );
+
   // Auth routes
   app.get('/api/current', requireAuth, authController.currentGet);
   app.get('/api', requireAuth, (req, res) => res.send({ success: true }));
@@ -18,12 +27,6 @@ module.exports = app => {
   app.post('/api/resend', authController.resendTokenPost);
 
   // Picture routes
-  app.post('/api/picture/save', requireAuth, pictureController.savePicturePost);
-  app.delete(
-    '/api/picture/delete/:id',
-    requireAuth,
-    pictureController.pictureDelete
-  );
   app.post(
     '/api/picture/like/:id',
     requireAuth,
