@@ -15,12 +15,13 @@ export default ({
       {...input}
       type={type}
       autoComplete="off"
+      placeholder={label}
       className={touched && error ? 'invalid' : touched ? 'valid' : ''}
     />
 
-    <label className={labelColor} htmlFor={name}>
+    {/* <label className={labelColor} htmlFor={name}>
       {label}
-    </label>
+    </label> */}
     {touched && (error && <span className="helper-text" data-error={error} />)}
   </div>
 );
