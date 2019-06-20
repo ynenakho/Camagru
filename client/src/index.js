@@ -16,7 +16,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   reducers,
-  {},
+  { auth: { authenticated: localStorage.jwtToken } },
   composeEnhancers(applyMiddleware(reduxThunk))
 );
 
@@ -26,6 +26,7 @@ if (localStorage.jwtToken) {
   const two_hours = 2 * 3600 * 1000;
   // Check for expiration of token (2 hours)
   if (decoded.iat + two_hours < currentTime) {
+    console.log('HERE');
     store.dispatch(signout());
     window.location.href = '/signin';
   } else {

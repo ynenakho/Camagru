@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
+import _ from 'lodash';
 
 class Header extends Component {
   componentDidMount() {
@@ -37,7 +38,7 @@ class Header extends Component {
 
   renderSideLinks = () => {
     const { authenticated, user } = this.props;
-    if (authenticated) {
+    if (authenticated && !_.isEmpty(user)) {
       return (
         <>
           <li>

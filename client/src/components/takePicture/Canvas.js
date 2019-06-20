@@ -35,10 +35,13 @@ class Canvas extends Component {
       );
       this.drawStickers();
       const frame = new Image();
+      frame.onload = () => {
+        this.ctx.drawImage(frame, 0, 0, this.canvas.width, this.canvas.height);
+        this.props.setCanvasData(this.canvas.toDataURL());
+      };
       frame.src = this.props.frame;
-      this.ctx.drawImage(frame, 0, 0, this.canvas.width, this.canvas.height);
+      this.props.setCanvasData(this.canvas.toDataURL());
     }
-    this.props.setCanvasData(this.canvas.toDataURL());
   }
 
   drawStickers = () => {
@@ -52,8 +55,10 @@ class Canvas extends Component {
         coords[i].oldHeight
       );
       const stickerImg = new Image();
+      stickerImg.onload = () => {
+        this.ctx.drawImage(stickerImg, x, y, 100, 100);
+      };
       stickerImg.src = coords[i].name;
-      this.ctx.drawImage(stickerImg, x, y, 100, 100);
     }
   };
 
@@ -83,8 +88,17 @@ class Canvas extends Component {
     if (!sticker) return;
     const position = this.getMousePos(e);
     const stickerImg = new Image();
+
+    stickerImg.onload = () => {
+      this.ctx.drawImage(
+        stickerImg,
+        position.x - 50,
+        position.y - 50,
+        100,
+        100
+      );
+    };
     stickerImg.src = sticker;
-    this.ctx.drawImage(stickerImg, position.x - 50, position.y - 50, 100, 100);
     addStickerCoords({
       name: sticker,
       x: position.x - 50,
