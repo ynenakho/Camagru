@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
 const passwordGen = require('../helpers/passwordGenerator');
 
-const tokenForUser = user => {
+const tokenForUser = (user) => {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: user.id, iat: timestamp }, keys.jwtTokenSecret);
 };
@@ -17,7 +17,7 @@ exports.currentGet = (req, res) => {
     id: req.user.id,
     username: req.user.username,
     email: req.user.email,
-    getNotified: req.user.getNotified
+    getNotified: req.user.getNotified,
   });
 };
 
@@ -29,7 +29,7 @@ exports.forgotPasswordPost = (req, res, next) => {
       return res.status(400).json({ error: 'Email not registered' });
     const newPassword = passwordGen(6);
     existingUser.password = bcrypt.hashSync(newPassword, 10);
-    existingUser.save(err => {
+    existingUser.save((err) => {
       if (err) return next(err);
 
       // Send the email
@@ -39,12 +39,12 @@ exports.forgotPasswordPost = (req, res, next) => {
         to: email,
         subject: 'Account Verification Token',
         text: `Hello, ${existingUser.username}
-        Your new password is ${newPassword}`
+        Your new password is ${newPassword}`,
       };
-      sgMail.send(mailOptions, err => {
+      sgMail.send(mailOptions, (err) => {
         if (err) return next(err);
         res.send({
-          message: `New Password has been sent to ${email}.`
+          message: `New Password has been sent to ${email}.`,
         });
       });
     });
@@ -66,7 +66,7 @@ exports.updateProfilePost = (req, res, next) => {
       if (!isMatch)
         return res.status(400).json({
           error:
-            'Password does not match the password that you have on your profile'
+            'Password does not match the password that you have on your profile',
         });
       if (existingUser.username !== username) {
         User.findOne({ username }, (err, foundUser) => {
@@ -88,7 +88,7 @@ exports.updateProfilePost = (req, res, next) => {
       existingUser.username = username;
       existingUser.email = email;
       existingUser.getNotified = getNotified;
-      existingUser.save(err => {
+      existingUser.save((err) => {
         if (err) return next(err);
         return res.json({ token: tokenForUser(existingUser) });
       });
@@ -116,10 +116,10 @@ exports.signupPost = (req, res, next) => {
     const user = new User({
       username,
       password: hash,
-      email
+      email,
     });
 
-    user.save(err => {
+    user.save((err) => {
       if (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
           // Duplicate username
@@ -132,10 +132,10 @@ exports.signupPost = (req, res, next) => {
 
       const verificationToken = new VerificationToken({
         _userId: user._id,
-        token: crypto.randomBytes(16).toString('hex')
+        token: crypto.randomBytes(16).toString('hex'),
       });
 
-      verificationToken.save(err => {
+      verificationToken.save((err) => {
         if (err) return next(err);
 
         // Send the email
@@ -146,14 +146,12 @@ exports.signupPost = (req, res, next) => {
           subject: 'Account Verification Token',
           text: `Hello, ${username}\n
           Please verify your account by clicking the link:
-          https://${req.headers.host}/api/confirmation?token=${
-            verificationToken.token
-          }&email=${email}.`
+          https://${req.headers.host}/api/confirmation?token=${verificationToken.token}&email=${email}`,
         };
-        sgMail.send(mailOptions, err => {
+        sgMail.send(mailOptions, (err) => {
           if (err) return next(err);
           res.send({
-            message: `A verification email has been sent to ${email}.`
+            message: `A verification email has been sent to ${email}.`,
           });
         });
       });
@@ -169,7 +167,7 @@ exports.confirmationGet = (req, res, next) => {
     if (err) return next(err);
     if (!existingToken)
       return res.status(400).send({
-        error: 'We were unable to verify you. Token might be expired.'
+        error: 'We were unable to verify you. Token might be expired.',
       });
 
     User.findOne(
@@ -178,7 +176,7 @@ exports.confirmationGet = (req, res, next) => {
         if (err) return next(err);
         if (!existingUser)
           return res.status(400).send({
-            error: 'We were unable to find a user for this token.'
+            error: 'We were unable to find a user for this token.',
           });
         if (existingUser.isVerified)
           return res
@@ -186,7 +184,7 @@ exports.confirmationGet = (req, res, next) => {
             .send({ error: 'This user has already been verified.' });
 
         existingUser.isVerified = true;
-        existingUser.save(err => {
+        existingUser.save((err) => {
           if (err) return next(err);
           res.status(301).redirect(keys.clientURI + '/signin');
         });
@@ -207,17 +205,17 @@ exports.resendTokenPost = (req, res, next) => {
         .send({ error: 'We were unable to find a user with that email.' });
     if (existingUser.isVerified)
       return res.status(400).send({
-        error: 'This account has already been verified. Please log in.'
+        error: 'This account has already been verified. Please log in.',
       });
 
     // Create a verification token, save it, and send email
     const verificationToken = new VerificationToken({
       _userId: existingUser._id,
-      token: crypto.randomBytes(16).toString('hex')
+      token: crypto.randomBytes(16).toString('hex'),
     });
 
     // Save the token
-    verificationToken.save(err => {
+    verificationToken.save((err) => {
       if (err) return next(err);
 
       // Send the email
@@ -229,16 +227,12 @@ exports.resendTokenPost = (req, res, next) => {
         text: `Hello, ${existingUser.username}
         
         Please verify your account by clicking the link:
-        https://${req.headers.host}/api/confirmation?token=${
-          verificationToken.token
-        }&email=${email}.`
+        https://${req.headers.host}/api/confirmation?token=${verificationToken.token}&email=${email}.`,
       };
-      sgMail.send(mailOptions, err => {
+      sgMail.send(mailOptions, (err) => {
         if (err) return next(err);
         res.send({
-          message: `A verification email has been sent to ${
-            existingUser.email
-          }.`
+          message: `A verification email has been sent to ${existingUser.email}.`,
         });
       });
     });

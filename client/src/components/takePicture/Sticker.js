@@ -8,7 +8,13 @@ export class Sticker extends Component {
     return (
       <div>
         {ReactDOM.createPortal(
-          <img src={sticker} width="100px" height="100px" alt="" />,
+          <img
+            src={sticker}
+            width="100px"
+            height="100px"
+            alt=""
+            style={!sticker ? { display: 'none' } : {}}
+          />,
           document.querySelector('#sticker')
         )}
       </div>
@@ -16,8 +22,8 @@ export class Sticker extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  sticker: state.edit.sticker
+const mapStateToProps = (state) => ({
+  sticker: state.edit.sticker,
 });
 
 export default connect(mapStateToProps)(Sticker);

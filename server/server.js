@@ -10,8 +10,10 @@ const path = require('path');
 
 const app = express();
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true }, () =>
-  console.log('MongoDB connected')
+mongoose.connect(
+  keys.mongoURI,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log('MongoDB connected')
 );
 mongoose.set('useCreateIndex', true);
 
