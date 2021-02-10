@@ -8,5 +8,5 @@ module.exports = {
   AWSAccessKey: process.env.AWS_ACCESS_KEY_ID,
   AWSSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   AWSRegion: 'us-west-1',
-  AWSFileURL: 'https://s3-us-west-1.amazonaws.com/camagru-bucket/'
+  AWSFileURL: 'https://s3-us-west-1.amazonaws.com/camagru-bucket/',
 };
