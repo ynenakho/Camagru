@@ -4,37 +4,43 @@ import {
   ADD_COORDS,
   CLEAR_PICTURE,
   SET_CANVAS_DATA,
-  CLEAR_COORDS
+  CLEAR_COORDS,
+  EditPictureType,
+  CoordsType,
+  EditPictureActionType,
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: EditPictureType = {
   frame: '',
   sticker: '',
-  coords: [],
-  canvas: ''
+  coords: [] as CoordsType[],
+  canvas: '',
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (
+  state: EditPictureType = INITIAL_STATE,
+  action: EditPictureActionType
+) => {
   switch (action.type) {
     case CHANGE_FRAME:
       return {
         ...state,
-        frame: action.payload
+        frame: action.payload,
       };
     case CHOOSE_STICKER:
       return {
         ...state,
-        sticker: action.payload
+        sticker: action.payload,
       };
     case ADD_COORDS:
       return {
         ...state,
-        coords: [...state.coords, action.payload]
+        coords: [...state.coords, action.payload],
       };
     case CLEAR_COORDS:
       return {
         ...state,
-        coords: []
+        coords: [],
       };
     case CLEAR_PICTURE:
       return {
@@ -42,12 +48,12 @@ export default (state = INITIAL_STATE, action) => {
         frame: '',
         sticker: '',
         coords: [],
-        canvas: ''
+        canvas: '',
       };
     case SET_CANVAS_DATA:
       return {
         ...state,
-        canvas: action.payload
+        canvas: action.payload,
       };
     default:
       return state;

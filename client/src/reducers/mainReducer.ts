@@ -6,26 +6,29 @@ import {
   MAIN_LIKE_PICTURE,
   MAIN_ADD_COMMENT,
   MAIN_SAVE_PICTURE,
-  MAIN_GET_FIVE_PICTURES
+  MAIN_GET_FIVE_PICTURES,
+  MainReducerType,
+  PictureType,
+  MainActionsType,
 } from '../actions/types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: MainReducerType = {
   picturesFive: [],
   pictures: [],
-  error: ''
+  error: '',
 };
 
-const getNewState = (state, pic) => {
+const getNewState = (state: MainReducerType, pic: PictureType) => {
   const newState = Object.assign({}, state);
   if (newState.picturesFive)
-    newState.picturesFive = newState.picturesFive.map(picture => {
+    newState.picturesFive = newState.picturesFive.map((picture) => {
       if (picture._id === pic._id) {
         picture = Object.assign({}, pic);
       }
       return picture;
     });
   if (newState.pictures)
-    newState.pictures = newState.pictures.map(picture => {
+    newState.pictures = newState.pictures.map((picture) => {
       if (picture._id === pic._id) {
         picture = Object.assign({}, pic);
       }
@@ -34,7 +37,10 @@ const getNewState = (state, pic) => {
   return newState;
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (
+  state: MainReducerType = INITIAL_STATE,
+  action: MainActionsType
+) => {
   let newState;
   switch (action.type) {
     case MAIN_ADD_COMMENT:
@@ -43,12 +49,12 @@ export default (state = INITIAL_STATE, action) => {
     case MAIN_GET_ALL_PICTURES:
       return {
         ...state,
-        pictures: action.payload
+        pictures: action.payload,
       };
     case MAIN_GET_FIVE_PICTURES:
       return {
         ...state,
-        picturesFive: action.payload
+        picturesFive: action.payload,
       };
     case MAIN_LIKE_PICTURE:
       newState = getNewState(state, action.payload);
@@ -56,26 +62,26 @@ export default (state = INITIAL_STATE, action) => {
     case MAIN_GET_ERRORS:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       };
     case MAIN_DELETE_PICTURE:
       return {
         ...state,
         pictures: state.pictures.filter(
-          picture => picture._id !== action.payload
-        )
+          (picture) => picture._id !== action.payload
+        ),
       };
     case MAIN_DELETE_PICTURE_LANDING:
       return {
         ...state,
         picturesFive: state.picturesFive.filter(
-          picture => picture._id !== action.payload
-        )
+          (picture) => picture._id !== action.payload
+        ),
       };
     case MAIN_SAVE_PICTURE:
       return {
         ...state,
-        pictures: [action.payload, ...state.pictures]
+        pictures: [action.payload, ...state.pictures],
       };
     default:
       return state;

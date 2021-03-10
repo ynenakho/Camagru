@@ -4,9 +4,13 @@ import authReducer from './authReducer';
 import editPictureReducer from './editPictureReducer';
 import mainReducer from './mainReducer';
 
-export default combineReducers({
+const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
   edit: editPictureReducer,
-  main: mainReducer
+  main: mainReducer,
 });
+
+export type ReduxState = ReturnType<typeof rootReducer>;
+
+export default rootReducer;

@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useEffect, useRef } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
+import { ReduxState } from 'reducers';
 
-class Header extends Component {
-  componentDidMount() {
-    M.Sidenav.init(this.sidenav);
-    M.Modal.init(this.props.modal);
-  }
+type Props = ConnectedProps<typeof connector> & {
+  modal?: any;
+};
 
-  renderHeaderLinks = () => {
-    if (this.props.authenticated) {
+const Header: React.FC<Props> = ({ modal, authenticated, user }) => {
+  const sidenavRef = useRef(null);
+
+  useEffect(() => {
+    M.Sidenav.init(sidenavRef.current);
+    M.Modal.init(modal);
+  }, []);
+
+  const renderHeaderLinks = () => {
+    if (authenticated) {
       return (
         <ul className="right hide-on-med-and-down">
           <li>
@@ -35,8 +42,7 @@ class Header extends Component {
     }
   };
 
-  renderSideLinks = () => {
-    const { authenticated, user } = this.props;
+  const renderSideLinks = () => {
     if (authenticated && user && Object.keys(user).length !== 0) {
       return (
         <>
@@ -81,49 +87,45 @@ class Header extends Component {
     }
   };
 
-  render() {
-    return (
-      <>
-        <nav className="blue darken-2">
-          <div className="container">
-            <div className="nav-wrapper">
-              <Link to="/" className="brand-logo">
-                Camagru
-              </Link>
-              <a
-                href="#!"
-                data-target="mobile-nav"
-                className="button-collapse sidenav-trigger show-on-large right"
-              >
-                <i className="material-icons">menu</i>
-              </a>
-              {this.renderHeaderLinks()}
-            </div>
-          </div>
-        </nav>
-        <ul
-          className="sidenav"
-          id="mobile-nav"
-          ref={(sidenav) => (this.sidenav = sidenav)}
-        >
-          <li>
-            <Link to="/" className="sidenav-close">
+  return (
+    <>
+      <nav className="blue darken-2">
+        <div className="container">
+          <div className="nav-wrapper">
+            <Link to="/" className="brand-logo">
               Camagru
             </Link>
-          </li>
-          <li>
-            <div className="divider" />
-          </li>
-          {this.renderSideLinks()}
-        </ul>
-      </>
-    );
-  }
-}
+            <a
+              href="#!"
+              data-target="mobile-nav"
+              className="button-collapse sidenav-trigger show-on-large right"
+            >
+              <i className="material-icons">menu</i>
+            </a>
+            {renderHeaderLinks()}
+          </div>
+        </div>
+      </nav>
+      <ul className="sidenav" id="mobile-nav" ref={sidenavRef}>
+        <li>
+          <Link to="/" className="sidenav-close">
+            Camagru
+          </Link>
+        </li>
+        <li>
+          <div className="divider" />
+        </li>
+        {renderSideLinks()}
+      </ul>
+    </>
+  );
+};
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: ReduxState) => ({
   authenticated: state.auth.authenticated,
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(Header);
+const connector = connect(mapStateToProps);
+
+export default connector(Header);
