@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as editPictureActions from '../../actions/editPictureActions';
-import styles from './TakePicture.module.css';
 
 export class Stickers extends Component {
-  renderSticker = path => {
+  renderSticker = (path) => {
     const { chooseSticker } = this.props;
     return (
       <img
-        className={styles.stickerImage}
+        className="stickerImage"
         src={path}
         width="100px"
         height="100px"
@@ -30,7 +29,4 @@ export class Stickers extends Component {
   }
 }
 
-export default connect(
-  null,
-  editPictureActions
-)(Stickers);
+export default connect(null, editPictureActions)(Stickers);

@@ -3,19 +3,18 @@ import M from 'materialize-css';
 import { connect } from 'react-redux';
 
 import * as editPictureActions from '../../actions/editPictureActions';
-import styles from './TakePicture.module.css';
 
 class Frames extends Component {
   componentDidMount() {
     M.Carousel.init(this.carousel);
   }
 
-  renderCarouselItem = path => {
+  renderCarouselItem = (path) => {
     const { changeFrame } = this.props;
     return (
-      <div className={`carousel-item ${styles.carouselItem}`} href="#">
+      <div className={`carousel-item carouselItem`} href="#">
         <img
-          className={styles.carouselImage}
+          className="carouselImage"
           src={path}
           alt=""
           width="200px"
@@ -32,8 +31,8 @@ class Frames extends Component {
         <div className="row">
           <div className="col s12 center">
             <div
-              className={`carousel ${styles.carouselMain}`}
-              ref={carousel => (this.carousel = carousel)}
+              className="carousel carouselMain"
+              ref={(carousel) => (this.carousel = carousel)}
             >
               {this.renderCarouselItem('images/frame-1.png')}
               {this.renderCarouselItem('images/frame-2.png')}
@@ -48,7 +47,4 @@ class Frames extends Component {
   }
 }
 
-export default connect(
-  null,
-  editPictureActions
-)(Frames);
+export default connect(null, editPictureActions)(Frames);

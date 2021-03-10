@@ -7,12 +7,11 @@ import Stickers from './Stickers';
 import * as editPictureActions from '../../actions/editPictureActions';
 import * as mainActions from '../../actions/mainActions';
 import Button from '../common/Button';
-import styles from './TakePicture.module.css';
 
 class WebcamCapture extends Component {
   state = { imageSrc: '' };
 
-  setRef = webcam => (this.webcam = webcam);
+  setRef = (webcam) => (this.webcam = webcam);
 
   savePhoto = () => {
     const { savePictureToServer, canvas } = this.props;
@@ -39,7 +38,7 @@ class WebcamCapture extends Component {
     const videoConstraints = {
       width: 1536,
       height: 1024,
-      facingMode: 'user'
+      facingMode: 'user',
     };
 
     if (!this.state.imageSrc) {
@@ -70,7 +69,7 @@ class WebcamCapture extends Component {
       return <Button func={this.capture} name="Take photo" />;
     } else {
       return (
-        <div className={styles.camButtonsDiv}>
+        <div className="camButtonsDiv">
           <Button func={this.resetPhoto} name="Retake photo" />
           <Button func={this.clearChanges} name="Clear" />
           <Button func={this.savePhoto} name="Save photo" />
@@ -101,14 +100,11 @@ class WebcamCapture extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  canvas: state.edit.canvas
+const mapStateToProps = (state) => ({
+  canvas: state.edit.canvas,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    ...editPictureActions,
-    ...mainActions
-  }
-)(WebcamCapture);
+export default connect(mapStateToProps, {
+  ...editPictureActions,
+  ...mainActions,
+})(WebcamCapture);

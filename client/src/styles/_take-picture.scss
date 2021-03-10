@@ -1,18 +1,22 @@
+// used in WebcamCapture
 .camButtonsDiv {
   display: flex;
   justify-content: space-between;
 }
 
+// RenderPicture
 .underPicButtons {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
+// Frames
 .carouselMain {
   height: 150px;
 }
 
+// Frames
 .carouselItem {
   height: 100px;
   display: flex;
@@ -20,10 +24,12 @@
   justify-content: center;
 }
 
+// Frames
 .carouselImage {
   cursor: pointer;
 }
 
+// Stickers
 .stickerImage {
   cursor: pointer;
 }

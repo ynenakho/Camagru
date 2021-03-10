@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import PictureDiv from './PictureDiv';
 import Button from '../common/Button';
 import * as mainActions from '../../actions/mainActions';
-import styles from './Landing.module.css';
 
 export class Landing extends Component {
   state = {
-    page: 0
+    page: 0,
   };
 
   componentDidMount() {
@@ -27,7 +26,7 @@ export class Landing extends Component {
 
   renderPictures = () => {
     const { pictures } = this.props;
-    return pictures.map(picture => (
+    return pictures.map((picture) => (
       <PictureDiv picture={picture} key={picture._id} />
     ));
   };
@@ -38,7 +37,7 @@ export class Landing extends Component {
     if (page === 0) return;
     getFivePictures(page - 1);
     this.setState({
-      page: page - 1
+      page: page - 1,
     });
   };
 
@@ -48,14 +47,14 @@ export class Landing extends Component {
     if (pictures.length < 5) return;
     getFivePictures(page + 1);
     this.setState({
-      page: page + 1
+      page: page + 1,
     });
   };
 
   renderArrows = () => {
     const { page } = this.state;
     return (
-      <div className={styles.prevNextDiv}>
+      <div className="prevNextDiv">
         <Button name="Prev" func={this.prevPage} />
         <h5>{page + 1}</h5>
         <Button name="Next" func={this.nextPage} />
@@ -79,11 +78,8 @@ export class Landing extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  pictures: state.main.picturesFive
+const mapStateToProps = (state) => ({
+  pictures: state.main.picturesFive,
 });
 
-export default connect(
-  mapStateToProps,
-  mainActions
-)(Landing);
+export default connect(mapStateToProps, mainActions)(Landing);

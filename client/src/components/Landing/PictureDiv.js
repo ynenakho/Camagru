@@ -6,7 +6,6 @@ import DeleteButton from '../common/DeleteButton';
 import LikeButton from '../common/LikeButton';
 import Button from '../common/Button';
 import * as mainActions from '../../actions/mainActions';
-import styles from './Landing.module.css';
 
 export class PictureDiv extends Component {
   state = { showComments: false };
@@ -14,7 +13,7 @@ export class PictureDiv extends Component {
   toggleShowComments = () => {
     const { showComments } = this.state;
     this.setState({
-      showComments: !showComments
+      showComments: !showComments,
     });
   };
 
@@ -30,7 +29,7 @@ export class PictureDiv extends Component {
     const { picture, auth, likePicture, deletePictureLanding } = this.props;
     return (
       <div>
-        <div className={styles.buttonsDiv}>
+        <div className="buttonsDiv">
           <LikeButton
             likePicture={likePicture}
             auth={auth}
@@ -60,11 +59,8 @@ export class PictureDiv extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
-export default connect(
-  mapStateToProps,
-  mainActions
-)(PictureDiv);
+export default connect(mapStateToProps, mainActions)(PictureDiv);

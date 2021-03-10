@@ -3,16 +3,14 @@ import Header from './Header';
 import Footer from './Footer';
 import 'materialize-css/dist/css/materialize.min.css';
 
-import styles from './App.module.css';
-
 class App extends Component {
   render() {
     const { children } = this.props;
 
     return (
-      <div className={styles.App}>
+      <div className="app">
         <Header />
-        <div className="">{children}</div>
+        <div>{children}</div>
         <Footer />
       </div>
     );

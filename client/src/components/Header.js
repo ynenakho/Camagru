@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
-import _ from 'lodash';
 
 class Header extends Component {
   componentDidMount() {
@@ -38,7 +37,7 @@ class Header extends Component {
 
   renderSideLinks = () => {
     const { authenticated, user } = this.props;
-    if (authenticated && !_.isEmpty(user)) {
+    if (authenticated && user && Object.keys(user).length !== 0) {
       return (
         <>
           <li>
@@ -105,7 +104,7 @@ class Header extends Component {
         <ul
           className="sidenav"
           id="mobile-nav"
-          ref={sidenav => (this.sidenav = sidenav)}
+          ref={(sidenav) => (this.sidenav = sidenav)}
         >
           <li>
             <Link to="/" className="sidenav-close">
@@ -122,9 +121,9 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   authenticated: state.auth.authenticated,
-  user: state.auth.user
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps)(Header);

@@ -6,14 +6,13 @@ import M from 'materialize-css';
 
 import renderField from '../common/renderField';
 import * as authActions from '../../actions/authActions';
-import styles from './Settings.module.css';
 
 class Settings extends Component {
   componentDidMount() {
     this.modalTrigger = M.Modal.init(this.modal);
   }
 
-  onSubmit = formValues => {
+  onSubmit = (formValues) => {
     const { updateProfile } = this.props;
     return updateProfile(formValues, () => {
       this.modalTrigger.open();
@@ -83,9 +82,7 @@ class Settings extends Component {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`btn btn-extended blue lighten-2 black-text ${
-                    styles.button
-                  }`}
+                  className="btn btn-extended blue lighten-2 black-text settings-button"
                 >
                   SUBMIT
                 </button>
@@ -93,7 +90,11 @@ class Settings extends Component {
             </div>
           </div>
         </div>
-        <div id="modal1" className="modal" ref={modal => (this.modal = modal)}>
+        <div
+          id="modal1"
+          className="modal"
+          ref={(modal) => (this.modal = modal)}
+        >
           <div className="modal-content">
             <h4>Confirmation</h4>
             <p>Your settings are updated</p>
@@ -134,17 +135,14 @@ const validate = ({ username, email, newPassword, oldPassword }) => {
   return errors;
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   auth: state.auth.authenticated,
   user: state.auth.user,
   initialValues: state.auth.user,
-  errorMessage: state.auth.errorMessage
+  errorMessage: state.auth.errorMessage,
 });
 
 export default compose(
-  connect(
-    mapStateToProps,
-    authActions
-  ),
+  connect(mapStateToProps, authActions),
   reduxForm({ form: 'settings', validate })
 )(Settings);

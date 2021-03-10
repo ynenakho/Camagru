@@ -1,0 +1,25 @@
+@import './take-picture';
+@import './landing';
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+// AuthButton
+.auth-button {
+  display: block;
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+// Settings
+.settings-button {
+  display: block;
+  width: 60%;
+  margin: auto;
+  margin-top: 60px;
+}

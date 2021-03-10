@@ -11,6 +11,7 @@ import setAuthToken from './components/common/setAuthToken';
 import { setCurrentUser, signout } from './actions/authActions';
 
 import reducers from './reducers';
+import './styles/styles.css';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

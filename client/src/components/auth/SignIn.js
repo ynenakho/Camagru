@@ -7,10 +7,9 @@ import { Link } from 'react-router-dom';
 import renderField from '../common/renderField';
 import AuthButton from '../common/AuthButton';
 import * as authActions from '../../actions/authActions';
-import styles from '../common/AuthButton.module.css';
 
 class SignIn extends Component {
-  onSubmit = formValues => {
+  onSubmit = (formValues) => {
     const { signin, history } = this.props;
     return signin(formValues, () => {
       history.push('/');
@@ -48,9 +47,7 @@ class SignIn extends Component {
                   <Link
                     to="/forgotpassword"
                     disabled={submitting}
-                    className={`btn btn-extended grey lighten-4 black-text ${
-                      styles.authbutton
-                    }`}
+                    className="btn btn-extended grey lighten-4 black-text auth-button"
                   >
                     FORGOT PASSWORD
                   </Link>
@@ -76,16 +73,13 @@ const validate = ({ username, password }) => {
   return errors;
 };
 
-const mapStateToProps = state => ({
-  errorMessage: state.auth.errorMessage
+const mapStateToProps = (state) => ({
+  errorMessage: state.auth.errorMessage,
 });
 
 const afterSubmit = (result, dispatch) => dispatch(reset('signIn'));
 
 export default compose(
-  connect(
-    mapStateToProps,
-    authActions
-  ),
+  connect(mapStateToProps, authActions),
   reduxForm({ form: 'signIn', validate, onSubmitSuccess: afterSubmit })
 )(SignIn);

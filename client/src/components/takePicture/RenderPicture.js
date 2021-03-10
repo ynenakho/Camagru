@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import DeleteButton from '../common/DeleteButton';
 import LikeButton from '../common/LikeButton';
 import * as mainActions from '../../actions/mainActions';
-import styles from './TakePicture.module.css';
 
 export class RenderPicture extends Component {
   renderButtons() {
     const { picture, auth, likePicture, deletePicture } = this.props;
     return (
-      <div className={styles.underPicButtons}>
+      <div className="underPicButtons">
         <LikeButton
           likePicture={likePicture}
           auth={auth}
@@ -33,7 +32,4 @@ export class RenderPicture extends Component {
   }
 }
 
-export default connect(
-  null,
-  mainActions
-)(RenderPicture);
+export default connect(null, mainActions)(RenderPicture);
