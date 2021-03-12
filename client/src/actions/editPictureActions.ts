@@ -7,6 +7,7 @@ import {
   CLEAR_PICTURE,
   SET_CANVAS_DATA,
   CoordsType,
+  StickerType,
 } from './types';
 
 export const setCanvasData = (data: string) => (dispatch: Dispatch) => {
@@ -23,7 +24,7 @@ export const changeFrame = (frame: string) => (dispatch: Dispatch) => {
   });
 };
 
-export const chooseSticker = (sticker: string) => (dispatch: Dispatch) => {
+export const chooseSticker = (sticker: StickerType) => (dispatch: Dispatch) => {
   dispatch({
     type: CHOOSE_STICKER,
     payload: sticker,
@@ -40,6 +41,8 @@ export const addStickerCoords = (coords: CoordsType) => (
 };
 
 export const clearCoords = () => (dispatch: Dispatch) => {
+  console.log('IN clearCoords');
+
   dispatch({
     type: CLEAR_COORDS,
   });

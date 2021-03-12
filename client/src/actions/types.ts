@@ -65,9 +65,15 @@ type ChangeFrameAction = {
   payload: string;
 };
 
+export type StickerType = {
+  name: string;
+  x: number;
+  y: number;
+};
+
 type ChooseStickerAction = {
   type: typeof CHOOSE_STICKER;
-  payload: string;
+  payload: StickerType;
 };
 
 export type CoordsType = {
@@ -106,7 +112,7 @@ export type EditPictureActionType =
 
 export type EditPictureType = {
   frame: string;
-  sticker: string;
+  sticker: { name: string; x: number; y: number };
   coords: CoordsType[];
   canvas: string;
 };

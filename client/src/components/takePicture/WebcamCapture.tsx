@@ -63,14 +63,7 @@ const WebcamCapture: FC<Props> = ({
         />
       );
     } else {
-      return (
-        <Canvas
-          image={imageSrc}
-          // height={'100%'}
-          // width={'100%'}
-          // onChooseFrame={onChooseFrame}
-        />
-      );
+      return <Canvas image={imageSrc} />;
     }
   };
 

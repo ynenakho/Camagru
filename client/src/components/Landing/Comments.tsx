@@ -10,14 +10,7 @@ type Props = ConnectedProps<typeof connector> & {
   picture: PictureType;
 };
 
-const Comments: FC<Props> = ({
-  deleteComment,
-  picture,
-  // picture: { comments },
-  auth,
-}) => {
-  console.log(CommentForm);
-
+const Comments: FC<Props> = ({ deleteComment, picture, auth }) => {
   const renderComments = () => {
     return picture.comments.map((comment) => (
       <li className="collection-item blue lighten-1" key={comment._id}>
@@ -46,7 +39,7 @@ const Comments: FC<Props> = ({
         </li>
         {renderComments()}
       </ul>
-      {/* {auth.authenticated ? <CommentForm picture={picture} /> : null} */}
+      {auth.authenticated ? <CommentForm picture={picture} /> : null}
     </div>
   );
 };

@@ -8,11 +8,12 @@ import {
   EditPictureType,
   CoordsType,
   EditPictureActionType,
+  StickerType,
 } from '../actions/types';
 
 const INITIAL_STATE: EditPictureType = {
   frame: '',
-  sticker: '',
+  sticker: { name: '', x: 0, y: 0 } as StickerType,
   coords: [] as CoordsType[],
   canvas: '',
 };
@@ -45,10 +46,7 @@ export const editReducer = (
     case CLEAR_PICTURE:
       return {
         ...state,
-        frame: '',
-        sticker: '',
-        coords: [],
-        canvas: '',
+        ...INITIAL_STATE,
       };
     case SET_CANVAS_DATA:
       return {

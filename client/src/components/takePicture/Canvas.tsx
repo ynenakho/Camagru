@@ -15,6 +15,7 @@ const Canvas: FC<Props> = ({
   setCanvasData,
   frame,
   image,
+  chooseSticker,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const backgroundRef = useRef<HTMLImageElement>(null);
@@ -44,14 +45,8 @@ const Canvas: FC<Props> = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log('Got Here to redraw the sticker');
-    drawStickers();
-  }, [coords]);
-
-  useEffect(() => {
+  const redrawCleanPicture = () => {
     if (backgroundRef.current && canvasRef.current && ctx) {
-      console.log('Got Here to redraw the frame');
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       ctx.drawImage(
         backgroundRef.current,
@@ -60,24 +55,31 @@ const Canvas: FC<Props> = ({
         canvasRef.current.width,
         canvasRef.current.height
       );
-      drawStickers();
-      const newFrame = new Image();
-      newFrame.onload = () => {
-        if (backgroundRef.current && canvasRef.current) {
-          ctx.drawImage(
-            newFrame,
-            0,
-            0,
-            canvasRef.current.width,
-            canvasRef.current.height
-          );
-          setCanvasData(canvasRef.current.toDataURL());
-        }
-      };
-
-      newFrame.src = frame;
     }
-  }, [frame]);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (ctx) {
+        redrawCleanPicture();
+        await drawStickers();
+        const newFrame = new Image();
+        newFrame.onload = () => {
+          if (backgroundRef.current && canvasRef.current) {
+            ctx.drawImage(
+              newFrame,
+              0,
+              0,
+              canvasRef.current.width,
+              canvasRef.current.height
+            );
+            setCanvasData(canvasRef.current.toDataURL());
+          }
+        };
+        newFrame.src = frame;
+      }
+    })();
+  }, [frame, coords]);
 
   interface OnLoadAble {
     onload: any;
@@ -95,24 +97,27 @@ const Canvas: FC<Props> = ({
 
   const drawStickers = async () => {
     if (!coords) return;
-    for (let i = 0; i < coords.length; i++) {
-      const { x, y } = getStickerPos(
-        coords[i].x,
-        coords[i].y,
-        coords[i].oldWidth,
-        coords[i].oldHeight
-      );
-      const stickerImg = new Image();
-      const obj = onload2promise(stickerImg);
-      stickerImg.src = coords[i].name;
-      await obj;
-      if (canvasRef.current && ctx) {
-        ctx.drawImage(stickerImg, x, y, 100, 100);
+    return new Promise(async (resolve, reject) => {
+      for (let i = 0; i < coords.length; i++) {
+        const { x, y } = getStickerPos(
+          coords[i].x,
+          coords[i].y,
+          coords[i].oldWidth,
+          coords[i].oldHeight
+        );
+        const stickerImg = new Image();
+        const obj = onload2promise(stickerImg);
+        stickerImg.src = coords[i].name;
+        await obj;
+        if (canvasRef.current && ctx) {
+          ctx.drawImage(stickerImg, x, y, 100, 100);
+        }
       }
-    }
-    if (canvasRef.current) {
-      setCanvasData(canvasRef.current.toDataURL());
-    }
+      if (canvasRef.current) {
+        setCanvasData(canvasRef.current.toDataURL());
+      }
+      return resolve(true);
+    });
   };
 
   const getStickerPos = (
@@ -147,35 +152,28 @@ const Canvas: FC<Props> = ({
     return { x: 0, y: 0, clientX: 0, clientY: 0 };
   };
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleDrop = (e: React.MouseEvent) => {
     if (!sticker) return;
     const position = getMousePos(e);
-    // const stickerImg = new Image();
-
-    // stickerImg.onload = () => {
-    //   if (ctx && canvasRef.current) {
-    //     ctx.drawImage(stickerImg, position.x - 50, position.y - 50, 100, 100);
-    //     setCanvasData(canvasRef.current.toDataURL());
-    //   }
-    // };
-    // stickerImg.src = sticker;
     if (canvasRef.current) {
       addStickerCoords({
-        name: sticker,
-        x: position.x - 50,
-        y: position.y - 50,
+        name: sticker.name,
+        x: position.x - sticker.x,
+        y: position.y - sticker.y,
         oldWidth: canvasRef.current.width,
         oldHeight: canvasRef.current.height,
       });
     }
+    chooseSticker({ name: '', x: 0, y: 0 });
   };
 
   return (
     <div>
       <canvas
-        onClick={(e) => handleClick(e)}
         ref={canvasRef}
         style={{ width: '100%' }}
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
       />
       <img
         ref={backgroundRef}

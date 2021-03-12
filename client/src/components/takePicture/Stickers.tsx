@@ -6,8 +6,13 @@ type Props = ConnectedProps<typeof connector>;
 
 const Stickers: FC<Props> = ({ chooseSticker }) => {
   const renderSticker = (path: string) => {
-    const handleClick = () => {
-      chooseSticker(path);
+    const handleClick = (e: any) => {
+      const clientRect = e.currentTarget.getBoundingClientRect();
+      chooseSticker({
+        name: path,
+        x: e.clientX - clientRect.x,
+        y: e.clientY - clientRect.y,
+      });
     };
 
     return (
@@ -17,7 +22,9 @@ const Stickers: FC<Props> = ({ chooseSticker }) => {
         width="100px"
         height="100px"
         alt=""
-        onClick={handleClick}
+        // onClick={handleClick}
+        draggable
+        onDragStart={handleClick}
       />
     );
   };
