@@ -1,6 +1,5 @@
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import 'materialize-css/dist/css/materialize.min.css';
 
 type Props = {
   children: React.ReactChild[];

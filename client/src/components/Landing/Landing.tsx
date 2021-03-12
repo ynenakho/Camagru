@@ -1,7 +1,7 @@
 import { useState, useEffect, FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import PictureDiv from './PictureDiv';
+import Picture from './Picture';
 import Button from '../common/Button';
 import * as mainActions from '../../actions/mainActions';
 import { ReduxState } from 'reducers';
@@ -16,9 +16,7 @@ const Landing: FC<Props> = ({ getFivePictures, pictures }) => {
   }, []);
 
   const renderPictures = () =>
-    pictures.map((picture) => (
-      <PictureDiv picture={picture} key={picture._id} />
-    ));
+    pictures.map((picture) => <Picture picture={picture} key={picture._id} />);
 
   const prevPage = () => {
     if (page === 0) return;
@@ -41,15 +39,15 @@ const Landing: FC<Props> = ({ getFivePictures, pictures }) => {
   );
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col s12">
-          <div className="card-panel blue darken-2 white-text">
-            {renderPictures()}
-            {renderArrows()}
-          </div>
-        </div>
-      </div>
+    <div className="main-wrapper">
+      {/* <div className="row">
+        <div className="col s12"> */}
+      {/* <div className="card-panel  white-text"> */}
+      {renderPictures()}
+      {renderArrows()}
+      {/* </div> */}
+      {/* </div>
+      </div> */}
     </div>
   );
 };

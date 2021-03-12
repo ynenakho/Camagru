@@ -58,7 +58,7 @@ const PictureDiv: FC<Props> = ({
   };
 
   return (
-    <div>
+    <div className="picture-wrapper">
       <img width="100%" src={picture.picturePath} alt="" key={picture._id} />
       {renderButtons()}
     </div>

@@ -1,43 +1,55 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
 import { ReduxState } from 'reducers';
 
-type Props = ConnectedProps<typeof connector> & {
-  modal?: any;
-};
+type Props = ConnectedProps<typeof connector>;
 
-const Header: React.FC<Props> = ({ modal, authenticated, user }) => {
-  const sidenavRef = useRef(null);
+const Header: React.FC<Props> = ({ authenticated, user }) => {
+  const sidenavRef = useRef<HTMLDivElement>(null);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
-    M.Sidenav.init(sidenavRef.current);
-    M.Modal.init(modal);
-  }, []);
+    if (showSidebar) {
+      const handleClickOutside = (e: MouseEvent) => {
+        if ((e.target as HTMLElement).id) return;
+        if (
+          sidenavRef.current &&
+          !sidenavRef.current.contains(e.target as Node)
+        ) {
+          closeSidebar();
+        }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showSidebar]);
+
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
+  const closeSidebar = () => {
+    setShowSidebar(false);
+  };
 
   const renderHeaderLinks = () => {
     if (authenticated) {
       return (
-        <ul className="right hide-on-med-and-down">
-          <li>
-            <Link to="/picture">Take Picture</Link>
-          </li>
-          <li>
-            <Link to="/signout">Sign Out</Link>
-          </li>
-        </ul>
+        <>
+          <Link to="/picture">Take Picture</Link>
+          <Link to="/signout">Sign Out</Link>
+        </>
       );
     } else {
       return (
-        <ul className="right hide-on-med-and-down">
-          <li>
-            <Link to="/signin">Login</Link>
-          </li>
-          <li>
-            <Link to="/signup">Sign Up</Link>
-          </li>
-        </ul>
+        <>
+          <Link to="/signin">Login</Link>
+          <Link to="/signup">Sign Up</Link>
+        </>
       );
     }
   };
@@ -46,78 +58,57 @@ const Header: React.FC<Props> = ({ modal, authenticated, user }) => {
     if (authenticated && user && Object.keys(user).length !== 0) {
       return (
         <>
-          <li>
-            <Link to="#">Hello {user.username}</Link>
-          </li>
-          <li>
-            <Link className="sidenav-close" to="/picture">
-              Take Picture
-            </Link>
-          </li>
-          <li>
-            <Link className="sidenav-close" to="/settings">
-              Settings
-            </Link>
-          </li>
-          <li>
-            <div className="divider" />
-          </li>
-          <li>
-            <Link className="sidenav-close" to="/signout">
-              Sign Out
-            </Link>
-          </li>
+          <h2>Hello {user.username}</h2>
+          <Link className="sidebar-link" to="/" onClick={closeSidebar}>
+            Home
+          </Link>
+          <Link className="sidebar-link" to="/picture" onClick={closeSidebar}>
+            Take Picture
+          </Link>
+          <Link className="sidebar-link" to="/settings" onClick={closeSidebar}>
+            Settings
+          </Link>
+          <Link className="sidebar-link" to="/signout" onClick={closeSidebar}>
+            Sign Out
+          </Link>
         </>
       );
     } else {
       return (
         <>
-          <li>
-            <Link className="sidenav-close" to="/signin">
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link className="sidenav-close" to="/signup">
-              Sign Up
-            </Link>
-          </li>
+          <Link className="sidebar-link" to="/signin" onClick={closeSidebar}>
+            Login
+          </Link>
+          <Link className="sidebar-link" to="/signup" onClick={closeSidebar}>
+            Sign Up
+          </Link>
         </>
       );
     }
   };
 
   return (
-    <>
-      <nav className="blue darken-2">
-        <div className="container">
-          <div className="nav-wrapper">
-            <Link to="/" className="brand-logo">
-              Camagru
-            </Link>
-            <a
-              href="#!"
-              data-target="mobile-nav"
-              className="button-collapse sidenav-trigger show-on-large right"
-            >
-              <i className="material-icons">menu</i>
-            </a>
-            {renderHeaderLinks()}
-          </div>
+    <nav className="header-wrapper">
+      <div className="header">
+        <Link to="/" className="brand-logo">
+          <h1>Camagru</h1>
+        </Link>
+        <div className="buttons">
+          {renderHeaderLinks()}
+          <i
+            className="fas fa-bars fa-lg button"
+            onClick={toggleSidebar}
+            id="menu-button"
+          ></i>
         </div>
-      </nav>
-      <ul className="sidenav" id="mobile-nav" ref={sidenavRef}>
-        <li>
-          <Link to="/" className="sidenav-close">
-            Camagru
-          </Link>
-        </li>
-        <li>
-          <div className="divider" />
-        </li>
+      </div>
+      <div
+        ref={sidenavRef}
+        className={`sidebar ${showSidebar ? 'show-sidebar' : ''}`}
+      >
         {renderSideLinks()}
-      </ul>
-    </>
+      </div>
+    </nav>
   );
 };
 
