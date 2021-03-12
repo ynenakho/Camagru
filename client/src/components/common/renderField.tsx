@@ -1,5 +1,15 @@
 import React from 'react';
 
+type Props = {
+  labelColor?: string;
+  icon: string;
+  input: string;
+  label: string;
+  type: string;
+  name?: string;
+  meta: { touched: boolean; error: string };
+};
+
 export default ({
   labelColor,
   icon,
@@ -7,8 +17,8 @@ export default ({
   label,
   type,
   name,
-  meta: { touched, error }
-}) => (
+  meta: { touched, error },
+}: Props) => (
   <div className="input-field invalid">
     {icon && <i className="material-icons prefix">{icon}</i>}
     <input
@@ -22,6 +32,6 @@ export default ({
     {/* <label className={labelColor} htmlFor={name}>
       {label}
     </label> */}
-    {touched && (error && <span className="helper-text" data-error={error} />)}
+    {touched && error && <span className="helper-text" data-error={error} />}
   </div>
 );

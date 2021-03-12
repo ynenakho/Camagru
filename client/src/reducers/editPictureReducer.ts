@@ -17,8 +17,8 @@ const INITIAL_STATE: EditPictureType = {
   canvas: '',
 };
 
-export default (
-  state: EditPictureType = INITIAL_STATE,
+export const editReducer = (
+  state = INITIAL_STATE,
   action: EditPictureActionType
 ) => {
   switch (action.type) {
@@ -59,3 +59,5 @@ export default (
       return state;
   }
 };
+
+export default editReducer;

@@ -1,10 +1,15 @@
-import React from 'react';
+import { FC } from 'react';
 
-const Button = ({ func, name }) => {
+type Props = {
+  func: () => void;
+  name: string;
+};
+
+const Button: FC<Props> = ({ func, name }) => {
   return (
     <button
       className="btn blue lighten-1 white-text waves-effect waves-light"
-      onClick={() => func()}
+      onClick={func}
     >
       {name}
     </button>

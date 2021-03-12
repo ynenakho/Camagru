@@ -14,7 +14,7 @@ const INITIAL_STATE: AuthReducerType = {
   user: {} as UserType,
 };
 
-export default (state = INITIAL_STATE, action: AuthActionType) => {
+export const authReducer = (state = INITIAL_STATE, action: AuthActionType) => {
   switch (action.type) {
     case AUTH_USER:
       return {
@@ -40,3 +40,5 @@ export default (state = INITIAL_STATE, action: AuthActionType) => {
       return state;
   }
 };
+
+export default authReducer;

@@ -1,9 +1,13 @@
-import React from 'react';
+import { FC } from 'react';
 
-const DeleteButton = ({ func, item }) => {
+type Props = {
+  func: () => void;
+};
+
+const DeleteButton: FC<Props> = ({ func }) => {
   return (
     <button
-      onClick={() => func(item)}
+      onClick={func}
       type="button"
       className="btn blue waves-effect waves-light"
     >

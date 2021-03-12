@@ -1,6 +1,11 @@
-import React from 'react';
+import { FC } from 'react';
 
-const AuthButton = ({ submitting, name }) => {
+type Props = {
+  submitting: boolean;
+  name: string;
+};
+
+const AuthButton: FC<Props> = ({ submitting, name }) => {
   return (
     <button
       type="submit"

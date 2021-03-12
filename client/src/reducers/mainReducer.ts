@@ -13,8 +13,8 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE: MainReducerType = {
-  picturesFive: [],
-  pictures: [],
+  picturesFive: [] as PictureType[],
+  pictures: [] as PictureType[],
   error: '',
 };
 
@@ -37,10 +37,7 @@ const getNewState = (state: MainReducerType, pic: PictureType) => {
   return newState;
 };
 
-export default (
-  state: MainReducerType = INITIAL_STATE,
-  action: MainActionsType
-) => {
+export const mainReducer = (state = INITIAL_STATE, action: MainActionsType) => {
   let newState;
   switch (action.type) {
     case MAIN_ADD_COMMENT:
@@ -87,3 +84,5 @@ export default (
       return state;
   }
 };
+
+export default mainReducer;

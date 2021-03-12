@@ -80,10 +80,10 @@ export type CoordsType = {
 
 type AddCoordsAction = {
   type: typeof ADD_COORDS;
-  payload: CoordsType[];
+  payload: CoordsType;
 };
 
-type SetCanvasDateAction = {
+type SetCanvasDataAction = {
   type: typeof SET_CANVAS_DATA;
   payload: string;
 };
@@ -100,7 +100,7 @@ export type EditPictureActionType =
   | ChangeFrameAction
   | ChooseStickerAction
   | AddCoordsAction
-  | SetCanvasDateAction
+  | SetCanvasDataAction
   | ClearPictureAction
   | ClearCoordsAction;
 
@@ -188,5 +188,5 @@ export type MainActionsType =
 export type MainReducerType = {
   picturesFive: PictureType[];
   pictures: PictureType[];
-  error: '';
+  error: string;
 };

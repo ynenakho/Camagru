@@ -1,11 +1,26 @@
-import { AUTH_USER, AUTH_ERROR, GET_CURRENT_USER, USER_ERROR } from './types';
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  GET_CURRENT_USER,
+  USER_ERROR,
+  AuthActionType,
+  UserType,
+} from './types';
 import { SubmissionError } from 'redux-form';
 import setAuthToken from '../components/common/setAuthToken';
 import axios from 'axios';
-import { AnyAction } from 'redux';
+import { Dispatch } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
+import { ReduxState } from 'reducers';
 
-export const updateProfile = (userData, callback) => (dispatch) =>
+type UserDataType = {
+  username: string;
+  email: string;
+};
+
+export const updateProfile = (userData: UserDataType, callback: () => void) => (
+  dispatch: ThunkDispatch<ReduxState, void, AuthActionType>
+) =>
   axios
     .post('/api/updateprofile', userData)
     .then((response) => {
@@ -28,7 +43,9 @@ export const updateProfile = (userData, callback) => (dispatch) =>
       });
     });
 
-export const setCurrentUser = (token) => (dispatch) => {
+export const setCurrentUser = (token: string) => (
+  dispatch: ThunkDispatch<ReduxState, void, AuthActionType>
+) => {
   axios
     .get('/api/current')
     .then((response) => {
@@ -49,7 +66,14 @@ export const setCurrentUser = (token) => (dispatch) => {
     );
 };
 
-export const signup = ({ email, password, username }, callback) => (dispatch) =>
+export const signup = (
+  {
+    email,
+    password,
+    username,
+  }: { email: string; password: string; username: string },
+  callback: () => void
+) => (dispatch: ThunkDispatch<ReduxState, void, AuthActionType>) =>
   axios
     .post('/api/signup', {
       email,
@@ -67,7 +91,10 @@ export const signup = ({ email, password, username }, callback) => (dispatch) =>
       });
     });
 
-export const signin = ({ username, password }, callback) => (dispatch) =>
+export const signin = (
+  { username, password }: { username: string; password: string },
+  callback: () => void
+) => (dispatch: ThunkDispatch<ReduxState, void, AuthActionType>) =>
   axios
     .post('/api/signin', {
       username,
@@ -93,12 +120,14 @@ export const signin = ({ username, password }, callback) => (dispatch) =>
       });
     });
 
-export const signout = () => (dispatch) => {
+export const signout = () => (
+  dispatch: ThunkDispatch<ReduxState, void, AuthActionType>
+) => {
   localStorage.removeItem('jwtToken');
-  setAuthToken(false);
+  setAuthToken('');
   dispatch({
     type: GET_CURRENT_USER,
-    payload: {},
+    payload: {} as UserType,
   });
   dispatch({
     type: AUTH_USER,
@@ -106,7 +135,10 @@ export const signout = () => (dispatch) => {
   });
 };
 
-export const forgotPassword = ({ email }, callback) => (dispatch) =>
+export const forgotPassword = (
+  { email }: { email: string },
+  callback: () => void
+) => (dispatch: Dispatch) =>
   axios
     .post('/api/forgotpassword', { email })
     .then((response) => callback())
