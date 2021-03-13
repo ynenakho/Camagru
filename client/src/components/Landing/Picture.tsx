@@ -53,8 +53,6 @@ const PictureDiv: FC<Props> = ({
     );
   };
 
-  console.log(picture.picturePath);
-
   const onImgLoad = (e: SyntheticEvent) => {
     const { offsetHeight, offsetWidth } = e.target as HTMLImageElement;
     if (offsetHeight > offsetWidth) {

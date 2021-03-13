@@ -1,4 +1,4 @@
-module.exports = string_length => {
+export const generatePassword = (string_length: number) => {
   let random_string = '';
   let random_ascii;
   for (let i = 0; i < string_length; i++) {

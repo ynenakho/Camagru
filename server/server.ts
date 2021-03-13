@@ -1,12 +1,14 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const http = require('http');
-const keys = require('./config/keys');
-const logger = require('morgan');
-const routes = require('./routes/routes');
-const cors = require('cors');
-const passport = require('passport');
-const path = require('path');
+import express from 'express';
+import mongoose from 'mongoose';
+import http from 'http';
+import logger from 'morgan';
+import cors from 'cors';
+import passport from 'passport';
+import path from 'path';
+
+import routes from './routes/routes';
+
+import keys from './config/keys';
 
 const app = express();
 

@@ -115,6 +115,8 @@ export const signin = (
         type: AUTH_ERROR,
         payload: e.response.data,
       });
+      console.log('HERE', e.response);
+
       throw new SubmissionError({
         _error: 'Incorrect Username/Password.',
       });

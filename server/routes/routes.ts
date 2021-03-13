@@ -1,13 +1,15 @@
-const authController = require('../controllers/authController');
-const awsController = require('../controllers/awsController');
-const pictureController = require('../controllers/pictureController');
-const passport = require('passport');
+const authController = require('../controllers/auth.controller');
+const awsController = require('../controllers/aws.controller');
+const pictureController = require('../controllers/picture.controller');
+import passport from 'passport';
+// import * from 'services/passport';
 require('../services/passport');
+import { Express } from 'express';
 
 const requireSignin = passport.authenticate('local', { session: false });
 const requireAuth = passport.authenticate('jwt', { session: false });
 
-module.exports = app => {
+const routes = (app: Express) => {
   // AWS s3 routes
   app.post('/api/picture/upload', requireAuth, awsController.uploadPicturePost);
   app.delete(
@@ -45,3 +47,5 @@ module.exports = app => {
   app.get('/api/picture/all', requireAuth, pictureController.picturesAllGet);
   app.get('/api/picture/five', pictureController.picturesFiveGet);
 };
+
+export default routes;
