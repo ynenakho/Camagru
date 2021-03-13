@@ -13,19 +13,18 @@ type Props = {
 
 const LikeButton: FC<Props> = ({ likePicture, auth, picture }) => {
   return (
-    <button
-      onClick={likePicture}
-      type="button"
-      className="btn blue lighten-3 waves-effect waves-light"
-      style={{ width: '80px' }}
-    >
-      <i
-        className={`fas fa-thumbs-up left ${
-          findUserLike(auth, picture.likes) ? 'blue-text' : ''
-        }`}
-      />
+    <div className="like-btn-wrapper">
+      <div onClick={likePicture} className="btn like">
+        <i
+          className={
+            findUserLike(auth, picture.likes)
+              ? 'fas fa-heart fa-lg red'
+              : 'far fa-heart fa-lg'
+          }
+        ></i>
+      </div>
       {picture.likes.length}
-    </button>
+    </div>
   );
 };
 

@@ -7,10 +7,7 @@ type Props = {
 
 const Button: FC<Props> = ({ func, name }) => {
   return (
-    <button
-      className="btn blue lighten-1 white-text waves-effect waves-light"
-      onClick={func}
-    >
+    <button className="btn auth-btn" onClick={func}>
       {name}
     </button>
   );

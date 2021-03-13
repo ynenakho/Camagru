@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef, FC, ComponentType } from 'react';
+import { useState, FC, ComponentType } from 'react';
 import { reduxForm, Field, InjectedFormProps } from 'redux-form';
 import { compose } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
-import M from 'materialize-css';
 
-import renderField from '../common/renderField';
+import InputField from '../common/InputField';
 import * as authActions from '../../actions/authActions';
 import { ReduxState } from 'reducers';
+import Modal from 'components/common/Modal';
+import AuthButton from 'components/common/AuthButton';
 
 type Props = ComponentType &
   ConnectedProps<typeof connector> &
@@ -25,16 +26,15 @@ const Settings: FC<Props> = ({
   submitting,
   error,
 }) => {
-  const [modalTrigger, setModalTrigger] = useState<any>(null);
-  useEffect(() => {
-    setModalTrigger(M.Modal.init(modalRef.current));
-  }, []);
+  const [showModal, setShowModal] = useState(false);
 
-  const modalRef = useRef(null);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
   const onSubmit: any = (formValues: FormType) => {
     return updateProfile(formValues, () => {
-      modalTrigger?.open();
+      toggleModal();
     });
   };
 
@@ -56,65 +56,40 @@ const Settings: FC<Props> = ({
 
   return (
     <>
-      <div className="settings">
-        <div className="row">
-          <div className="col l6 offset-l3 m8 offset-m2 s10 offset-s1 center">
-            <h1 className="blue-text">Settings</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Field
-                labelColor="blue-text"
-                icon="account_box"
-                name="username"
-                type="text"
-                component={renderField}
-              />
-              <Field
-                labelColor="blue-text"
-                icon="email"
-                name="email"
-                type="text"
-                component={renderField}
-              />
-              <Field
-                labelColor="blue-text"
-                label="New Password"
-                icon="lock"
-                name="newPassword"
-                type="password"
-                component={renderField}
-              />
-              <Field
-                labelColor="blue-text"
-                label="Old Password"
-                icon="lock"
-                name="oldPassword"
-                type="password"
-                component={renderField}
-              />
-              <Field name="getNotified" id="getNotified" component={checkBox} />
-              {error && <div style={{ color: 'red' }}>{error}</div>}
-              <button
-                type="submit"
-                disabled={submitting}
-                className="btn btn-extended blue lighten-2 black-text settings-button"
-              >
-                SUBMIT
-              </button>
-            </form>
+      <div className="section">
+        <h1>Settings</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Field
+            icon="account_box"
+            name="username"
+            type="text"
+            component={InputField}
+          />
+          <Field icon="email" name="email" type="text" component={InputField} />
+          <Field
+            label="New Password"
+            icon="lock"
+            name="newPassword"
+            type="password"
+            component={InputField}
+          />
+          <Field
+            label="Old Password"
+            icon="lock"
+            name="oldPassword"
+            type="password"
+            component={InputField}
+          />
+          <Field name="getNotified" id="getNotified" component={checkBox} />
+          {error && <div style={{ color: 'red' }}>{error}</div>}
+          <div className="signup-buttons-wrapper">
+            <AuthButton submitting={submitting} name="Submit" />
           </div>
-        </div>
+        </form>
       </div>
-      <div id="modal1" className="modal" ref={modalRef}>
-        <div className="modal-content">
-          <h4>Confirmation</h4>
-          <p>Your settings are updated</p>
-        </div>
-        <div className="modal-footer">
-          <button className="modal-close waves-effect waves-green btn-flat">
-            OK
-          </button>
-        </div>
-      </div>
+      <Modal title="Confirmation" onClose={toggleModal} show={showModal}>
+        <p>Your settings are updated</p>
+      </Modal>
     </>
   );
 };

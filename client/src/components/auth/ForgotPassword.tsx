@@ -1,24 +1,24 @@
-import { useRef, useEffect, useState, ComponentType } from 'react';
+import { useState, ComponentType } from 'react';
 import {
   reduxForm,
   Field,
   formValueSelector,
   InjectedFormProps,
-  FormSubmitHandler,
 } from 'redux-form';
 import { compose } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
-import M from 'materialize-css';
+import { RouteComponentProps } from 'react-router-dom';
 
-import renderField from 'components/common/renderField';
+import renderField from 'components/common/InputField';
 import AuthButton from 'components/common/AuthButton';
 import * as authActions from 'actions/authActions';
 import { ReduxState } from 'reducers';
+import Modal from 'components/common/Modal';
 
 type Props = ComponentType &
   InjectedFormProps &
-  ConnectedProps<typeof connector>;
+  ConnectedProps<typeof connector> &
+  RouteComponentProps;
 
 type FormType = {
   email: string;
@@ -30,65 +30,52 @@ const ForgotPassword: React.FC<Props> = ({
   submitting,
   error,
   email,
+  history,
 }) => {
-  const [modalTrigger, setModalTrigger] = useState<any>(null);
-  useEffect(() => {
-    setModalTrigger(M.Modal.init(modalRef.current));
-  }, []);
+  const [showModal, setShowModal] = useState(false);
 
-  const modalRef = useRef(null);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const onClose = () => {
+    toggleModal();
+    history.push('/signin');
+  };
 
   const onSubmit: any = (formValues: FormType) =>
     forgotPassword(formValues, () => {
-      modalTrigger?.open();
+      toggleModal();
     });
 
   return (
     <>
-      <div className="section section-login">
-        <div className="container">
-          <div className="row">
-            <div className="col s12 m8 offset-m2 l6 offset-l3">
-              <div className="card-panel blue darken-2 white-text center">
-                <h3>Forgot Password?</h3>
-                <h6>Get your new password sent on email</h6>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <Field
-                    labelColor="white-text"
-                    label="Email"
-                    icon="email"
-                    name="email"
-                    type="text"
-                    component={renderField}
-                  />
-                  {error && <div style={{ color: 'red' }}>{error}</div>}
-                  <AuthButton submitting={submitting} name="submit" />
-                </form>
-              </div>
-            </div>
+      <div className="section">
+        <h1>Forgot Password?</h1>
+        <h4>Get your new password sent on email</h4>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Field
+            labelColor="white-text"
+            label="Email"
+            icon="email"
+            name="email"
+            type="text"
+            component={renderField}
+          />
+          {error && <div style={{ color: 'red' }}>{error}</div>}
+          <div className="signup-buttons-wrapper">
+            <AuthButton submitting={submitting} name="submit" />
           </div>
-        </div>
+        </form>
       </div>
-      <div id="modal1" className="modal" ref={modalRef}>
-        <div className="modal-content">
-          <h4>Confirmation</h4>
-          <p>New password has been sent to {email}</p>
-        </div>
-        <div className="modal-footer">
-          <Link
-            to="/signin"
-            className="modal-close waves-effect waves-green btn-flat"
-          >
-            Login
-          </Link>
-        </div>
-      </div>
+      <Modal title="Confirmation" onClose={onClose} show={showModal}>
+        <p>New password has been sent to {email}</p>
+      </Modal>
     </>
   );
 };
 
 const validate = ({ email }: FormType) => {
-  // FIX TYPES - CREATE ONE ERROR TYPE
   const errors: FormType = { email: '' };
 
   if (!email) {
@@ -102,8 +89,6 @@ const validate = ({ email }: FormType) => {
 const selector = formValueSelector('forgotPassword');
 
 const mapStateToProps = (state: ReduxState) => ({
-  // Check if I need to display this error
-  // errorMessage: state.auth.errorMessage,
   email: selector(state, 'email'),
 });
 

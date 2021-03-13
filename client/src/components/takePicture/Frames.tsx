@@ -1,5 +1,5 @@
 import { useEffect, useRef, FC } from 'react';
-import M from 'materialize-css';
+// import M from 'materialize-css';
 import { connect, ConnectedProps } from 'react-redux';
 
 import * as editPictureActions from '../../actions/editPictureActions';
@@ -9,7 +9,7 @@ type Props = ConnectedProps<typeof connector>;
 const Frames: FC<Props> = ({ changeFrame }) => {
   const carouselRef = useRef(null);
   useEffect(() => {
-    M.Carousel.init(carouselRef.current);
+    // M.Carousel.init(carouselRef.current);
   }, []);
 
   const renderCarouselItem = (path: string) => {

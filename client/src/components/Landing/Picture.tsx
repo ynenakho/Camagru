@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, SyntheticEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import Comments from './Comments';
@@ -20,6 +20,7 @@ const PictureDiv: FC<Props> = ({
   auth,
 }) => {
   const [showComments, setShowComments] = useState(false);
+  const [width, setWidth] = useState(100);
 
   const toggleShowComments = () => {
     setShowComments(!showComments);
@@ -43,23 +44,44 @@ const PictureDiv: FC<Props> = ({
   const renderButtons = () => {
     return (
       <div>
-        <div className="buttonsDiv">
+        <div className="picture-section">
           <LikeButton likePicture={handleLike} auth={auth} picture={picture} />
           <Button func={toggleShowComments} name="Comments" />
-          {auth.authenticated &&
-          auth.user &&
-          picture._userId === auth.user.id ? (
-            <DeleteButton func={handleDeletePicture} />
-          ) : null}
         </div>
         {renderComments()}
       </div>
     );
   };
 
+  console.log(picture.picturePath);
+
+  const onImgLoad = (e: SyntheticEvent) => {
+    const { offsetHeight, offsetWidth } = e.target as HTMLImageElement;
+    if (offsetHeight > offsetWidth) {
+      setWidth(56.25);
+    }
+  };
+
   return (
     <div className="picture-wrapper">
-      <img width="100%" src={picture.picturePath} alt="" key={picture._id} />
+      <div className="picture-section">
+        <b>{picture.userName}</b>
+        {auth.authenticated && auth.user && picture._userId === auth.user.id ? (
+          <DeleteButton func={handleDeletePicture} />
+        ) : (
+          <div />
+        )}
+      </div>
+      <div className="image-wrapper">
+        <img
+          width={`${width}%`}
+          src={picture.picturePath}
+          alt=""
+          key={picture._id}
+          onLoad={onImgLoad}
+          className="image"
+        />
+      </div>
       {renderButtons()}
     </div>
   );

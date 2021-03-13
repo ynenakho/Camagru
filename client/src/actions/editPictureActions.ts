@@ -41,8 +41,6 @@ export const addStickerCoords = (coords: CoordsType) => (
 };
 
 export const clearCoords = () => (dispatch: Dispatch) => {
-  console.log('IN clearCoords');
-
   dispatch({
     type: CLEAR_COORDS,
   });

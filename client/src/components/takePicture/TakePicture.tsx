@@ -13,19 +13,9 @@ const TakePicture: FC<Props> = ({ getAllPictures }) => {
   }, []);
 
   return (
-    <div>
-      <div className="row">
-        <div className="col s12 m8">
-          <div className="card-panel blue darken-2 white-text center">
-            <WebcamCapture />
-          </div>
-        </div>
-        <div className="col s12 m4">
-          <div className="card-panel blue darken-2 white-text center">
-            <RenderAllPictures />
-          </div>
-        </div>
-      </div>
+    <div className="main-wrapper">
+      <WebcamCapture />
+      <RenderAllPictures />
     </div>
   );
 };

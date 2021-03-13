@@ -7,11 +7,7 @@ type Props = {
 
 const AuthButton: FC<Props> = ({ submitting, name }) => {
   return (
-    <button
-      type="submit"
-      disabled={submitting}
-      className="btn btn-extended grey lighten-4 black-text auth-button"
-    >
+    <button type="submit" disabled={submitting} className="btn auth-btn">
       {name}
     </button>
   );

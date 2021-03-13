@@ -1,23 +1,18 @@
-import { useRef, useEffect, useState, ComponentType } from 'react';
-import {
-  reduxForm,
-  Field,
-  reset,
-  FormSubmitHandler,
-  InjectedFormProps,
-} from 'redux-form';
+import { useState, ComponentType } from 'react';
+import { reduxForm, Field, reset, InjectedFormProps } from 'redux-form';
 import { compose, Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 import * as authActions from '../../actions/authActions';
-import M from 'materialize-css';
-import { Link } from 'react-router-dom';
-import renderField from '../common/renderField';
+import { RouteComponentProps } from 'react-router-dom';
+import inputField from '../common/InputField';
 import AuthButton from '../common/AuthButton';
 import { ReduxState } from 'reducers';
+import Modal from 'components/common/Modal';
 
 type Props = ComponentType &
   InjectedFormProps &
-  ConnectedProps<typeof connector>;
+  ConnectedProps<typeof connector> &
+  RouteComponentProps;
 
 type FormType = {
   username: string;
@@ -30,79 +25,62 @@ const SignUp: React.FC<Props> = ({
   submitting,
   error,
   signup,
+  history,
 }) => {
-  const [modalTrigger, setModalTrigger] = useState<any>(null);
+  const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    setModalTrigger(M.Modal.init(modalRef.current));
-  }, []);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
-  const modalRef = useRef(null);
+  const onClose = () => {
+    toggleModal();
+    history.push('/signin');
+  };
 
   const onSubmit: any = (formValues: FormType) => {
     return signup(formValues, () => {
-      modalTrigger.open();
+      toggleModal();
     });
   };
 
   return (
     <>
-      <div className="section section-signup">
-        <div className="container">
-          <div className="row">
-            <div className="col s12 m8 offset-m2 l6 offset-l3">
-              <div className="card-panel blue darken-2 white-text center">
-                <h1>Sign Up</h1>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <Field
-                    labelColor="white-text"
-                    label="Username"
-                    icon="account_box"
-                    name="username"
-                    type="text"
-                    component={renderField}
-                  />
-                  <Field
-                    labelColor="white-text"
-                    label="Email"
-                    icon="email"
-                    name="email"
-                    type="text"
-                    component={renderField}
-                  />
-                  <Field
-                    labelColor="white-text"
-                    label="Password"
-                    icon="lock"
-                    name="password"
-                    type="password"
-                    component={renderField}
-                  />
-                  {error && <div style={{ color: 'red' }}>{error}</div>}
-                  <AuthButton submitting={submitting} name="sign up" />
-                </form>
-              </div>
-            </div>
+      <div className="section">
+        <h1>Sign Up</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Field
+            label="Username"
+            icon="account_box"
+            name="username"
+            type="text"
+            component={inputField}
+          />
+          <Field
+            label="Email"
+            icon="email"
+            name="email"
+            type="text"
+            component={inputField}
+          />
+          <Field
+            label="Password"
+            icon="lock"
+            name="password"
+            type="password"
+            component={inputField}
+          />
+          {error && <div className="error-message">{error}</div>}
+          <div className="signup-buttons-wrapper">
+            <AuthButton submitting={submitting} name="sign up" />
           </div>
-        </div>
+        </form>
       </div>
-      <div id="modal1" className="modal" ref={modalRef}>
-        <div className="modal-content">
-          <h4>Almost there!</h4>
-          <p>
-            Check your email and follow the instructions to validate your
-            account
-          </p>
-        </div>
-        <div className="modal-footer">
-          <Link
-            to="/signin"
-            className="modal-close waves-effect waves-green btn-flat"
-          >
-            OK
-          </Link>
-        </div>
-      </div>
+      <Modal title="Almost there!" onClose={onClose} show={showModal}>
+        <p>
+          Check your email and follow the instructions to validate your account
+        </p>
+      </Modal>
     </>
   );
 };

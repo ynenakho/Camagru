@@ -93,7 +93,7 @@ const WebcamCapture: FC<Props> = ({
   };
 
   return (
-    <div className="">
+    <div className="webcam-wrapper">
       {renderWebcam()}
       {renderButtons()}
       {renderEdits()}

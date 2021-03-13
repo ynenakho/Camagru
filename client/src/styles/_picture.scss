@@ -1,3 +1,64 @@
 .picture-wrapper {
   margin-top: $sizing * 4;
+  background-color: $mainColor;
+  border-radius: 4px;
+  border: 1px solid $lightGreyColor;
+  width: 100%;
+
+  .image-wrapper {
+    width: 100%;
+    display: flex;
+    border-top: 1px solid $lightGreyColor;
+    border-bottom: 1px solid $lightGreyColor;
+  }
+
+  .image {
+    margin: auto;
+  }
+
+  .picture-section {
+    padding: $sizing * 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .comments-section {
+    padding: 0 $sizing * 2 $sizing * 2 $sizing * 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .comment-text {
+    color: $shadowColor;
+  }
+
+  .add-comment-section {
+    padding: $sizing * 2;
+    border-top: 1px solid $lightGreyColor;
+    display: flex;
+    justify-content: space-between;
+
+    .comment-input {
+      border: transparent;
+      width: 100%;
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .blue {
+      color: $lightBlueColor;
+      &:disabled {
+        color: $lightGreyColor;
+        cursor: unset;
+      }
+    }
+  }
 }

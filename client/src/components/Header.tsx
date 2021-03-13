@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
-import M from 'materialize-css';
 import { ReduxState } from 'reducers';
 
 type Props = ConnectedProps<typeof connector>;

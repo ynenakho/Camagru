@@ -8,7 +8,6 @@ import {
   MAIN_GET_FIVE_PICTURES,
   MAIN_DELETE_PICTURE_LANDING,
   MainActionsType,
-  CommentType,
 } from './types';
 import axios from 'axios';
 import { ThunkDispatch } from 'redux-thunk';

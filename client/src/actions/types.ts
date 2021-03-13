@@ -139,6 +139,7 @@ export type PictureType = {
   createdAt: string;
   likes: LikeType[];
   comments: CommentType[];
+  userName: string;
 };
 
 type GetAllPicturesAction = {

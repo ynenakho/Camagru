@@ -6,13 +6,9 @@ type Props = {
 
 const DeleteButton: FC<Props> = ({ func }) => {
   return (
-    <button
-      onClick={func}
-      type="button"
-      className="btn blue waves-effect waves-light"
-    >
+    <div onClick={func} className="btn">
       <i className="fas fa-times" />
-    </button>
+    </div>
   );
 };
 

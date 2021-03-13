@@ -3,7 +3,7 @@
   background-color: $mainColor;
   position: sticky;
   top: 0;
-  box-shadow: 0 0 4px $shadowColor;
+  box-shadow: 0 0 4px $greyColor;
 
   .header {
     max-width: $tablet;
@@ -20,7 +20,12 @@
   }
 
   a {
+    color: $darkColor;
+    text-decoration: none;
     padding: 0 $sizing;
+    &:active {
+      color: $shadowColor;
+    }
   }
 
   .button {

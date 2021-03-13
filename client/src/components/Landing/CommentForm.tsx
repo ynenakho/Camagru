@@ -1,5 +1,5 @@
 import { PictureType } from 'actions/types';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useState, FormEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import * as mainActions from '../../actions/mainActions';
 
@@ -8,28 +8,29 @@ type Props = ConnectedProps<typeof connector> & { picture: PictureType };
 const CommentForm: FC<Props> = ({ picture, addComment }) => {
   const [text, setText] = useState('');
 
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
     addComment(picture._id, { text });
     setText('');
   };
 
   return (
-    <div>
-      <textarea
+    <form className="add-comment-section" onSubmit={onSubmit}>
+      <input
         onChange={handleChange}
-        name="text"
         value={text}
-        className="white-text"
-        style={{ padding: '10px' }}
+        className="comment-input"
+        placeholder="Add a comment..."
+        autoFocus
       />
-      <button onClick={onSubmit} className="btn blue">
+      <button type="submit" className="btn blue" disabled={!text}>
         Send
       </button>
-    </div>
+    </form>
   );
 };
 
