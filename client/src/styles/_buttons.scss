@@ -1,0 +1,35 @@
+.btn {
+  all: unset;
+  padding: $sizing * 0.5;
+  cursor: pointer;
+}
+
+.like {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.like-btn-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.red {
+  color: $redColor;
+  animation: heart ease-in 250ms;
+}
+
+@keyframes heart {
+  0% {
+    font-size: 110%;
+  }
+  50% {
+    font-size: 150%;
+  }
+  100% {
+    font-size: 100%;
+  }
+}

@@ -1,0 +1,27 @@
+// used in WebcamCapture
+.cam-buttons-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+// RenderPicture
+.underPicButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.selected {
+  border: 1px solid $lightBlueColor;
+}
+
+// Stickers
+.stickerImage {
+  cursor: pointer;
+}
+
+.webcam-wrapper {
+  margin-top: $sizing * 5;
+  border: 1px solid $shadowColor;
+  border-radius: 4px;
+}

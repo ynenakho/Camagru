@@ -1,0 +1,47 @@
+.error-message {
+  font-size: 0.8rem;
+  color: $redColor;
+  margin: $sizing;
+  text-align: center;
+}
+
+@mixin button($color) {
+  margin: $sizing;
+  border-radius: 17px;
+  text-transform: capitalize;
+  padding: $sizing 2 * $sizing;
+  font-weight: 600;
+  border-color: $color;
+  color: #fff;
+  box-shadow: 0 0 40px 40px $color inset, 0 0 0 0 $color;
+  transition: all 150ms ease-in-out;
+  &:hover {
+    box-shadow: 0 0 8px 0 $color inset, 0 0 8px 2px $color;
+    color: $color;
+  }
+}
+
+.auth-btn {
+  @include button($lightBlueColor);
+}
+
+.auth-btn-grey {
+  @include button($lightGreyColor);
+}
+
+.float-right {
+  float: right;
+}
+
+.signup-buttons-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signin-buttons-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
