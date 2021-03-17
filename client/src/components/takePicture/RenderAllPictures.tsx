@@ -7,7 +7,7 @@ import RenderPicture from './RenderPicture';
 type Props = ConnectedProps<typeof connector>;
 
 const RenderAllPictures: FC<Props> = ({ pictures, auth }) => (
-  <>
+  <div className="user-pictures">
     {pictures.map((picture) => {
       if (auth.authenticated && picture._userId === auth.user.id)
         return (
@@ -15,7 +15,7 @@ const RenderAllPictures: FC<Props> = ({ pictures, auth }) => (
         );
       return null;
     })}
-  </>
+  </div>
 );
 
 const mapStateToProps = (state: ReduxState) => ({

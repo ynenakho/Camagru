@@ -48,6 +48,14 @@
     h2 {
       margin: $sizing auto;
     }
+    h3 {
+      margin: 2 * $sizing auto;
+    }
+
+    .title-wrapper {
+      display: flex;
+      border-bottom: 1px solid $lightGreyColor;
+    }
 
     .sidebar-link {
       padding: $sizing $sizing * 3;

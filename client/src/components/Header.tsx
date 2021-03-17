@@ -57,7 +57,7 @@ const Header: React.FC<Props> = ({ authenticated, user }) => {
     if (authenticated && user && Object.keys(user).length !== 0) {
       return (
         <>
-          <h2>Hello {user.username}</h2>
+          <h3>Hello {user.username}</h3>
           <Link className="sidebar-link" to="/" onClick={closeSidebar}>
             Home
           </Link>
@@ -105,6 +105,9 @@ const Header: React.FC<Props> = ({ authenticated, user }) => {
         ref={sidenavRef}
         className={`sidebar ${showSidebar ? 'show-sidebar' : ''}`}
       >
+        <div className="title-wrapper">
+          <h2>Camagru</h2>
+        </div>
         {renderSideLinks()}
       </div>
     </nav>

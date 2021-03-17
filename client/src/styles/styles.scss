@@ -25,11 +25,14 @@ $lightestGreyColor: rgba(0, 0, 0, 0.02);
 @import './input-field';
 @import './auth';
 @import './modal';
+@import './carousel';
 
 body {
   margin: 0;
   background-color: $lightestGreyColor;
   font-family: 'Ubuntu', serif;
+}
+* {
   box-sizing: border-box;
 }
 

@@ -8,6 +8,7 @@ import Button from '../common/Button';
 import * as mainActions from '../../actions/mainActions';
 import { ReduxState } from 'reducers';
 import { PictureType } from 'actions/types';
+import Modal from 'components/common/Modal';
 
 type Props = ConnectedProps<typeof connector> & {
   picture: PictureType;
@@ -21,14 +22,19 @@ const PictureDiv: FC<Props> = ({
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [width, setWidth] = useState(100);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleToggleModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
 
   const toggleShowComments = () => {
     setShowComments(!showComments);
   };
 
   const handleDeletePicture = () => {
-    // Add prompt and ask are you sure?
     deletePictureLanding(picture._id);
+    setShowDeleteModal(false);
   };
 
   const handleLike = () => {
@@ -39,6 +45,7 @@ const PictureDiv: FC<Props> = ({
     if (showComments) {
       return <Comments picture={picture} />;
     }
+    return null;
   };
 
   const renderButtons = () => {
@@ -61,27 +68,40 @@ const PictureDiv: FC<Props> = ({
   };
 
   return (
-    <div className="picture-wrapper">
-      <div className="picture-section">
-        <b>{picture.userName}</b>
-        {auth.authenticated && auth.user && picture._userId === auth.user.id ? (
-          <DeleteButton func={handleDeletePicture} />
-        ) : (
-          <div />
-        )}
+    <>
+      <div className="picture-wrapper">
+        <div className="picture-section">
+          <b>{picture.userName}</b>
+          {auth.authenticated &&
+          auth.user &&
+          picture._userId === auth.user.id ? (
+            <DeleteButton func={handleToggleModal} />
+          ) : (
+            <div />
+          )}
+        </div>
+        <div className="image-wrapper">
+          <img
+            width={`${width}%`}
+            src={picture.picturePath}
+            alt=""
+            key={picture._id}
+            onLoad={onImgLoad}
+            className="image"
+          />
+        </div>
+        {renderButtons()}
       </div>
-      <div className="image-wrapper">
-        <img
-          width={`${width}%`}
-          src={picture.picturePath}
-          alt=""
-          key={picture._id}
-          onLoad={onImgLoad}
-          className="image"
-        />
-      </div>
-      {renderButtons()}
-    </div>
+      <Modal
+        title="Delete picture"
+        onClose={handleDeletePicture}
+        show={showDeleteModal}
+        handleClose={handleToggleModal}
+        submitButtonText="Delete"
+      >
+        <p>Are you sure you want to delete this picture?</p>
+      </Modal>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ type Props = {
 
 const DeleteButton: FC<Props> = ({ func }) => {
   return (
-    <div onClick={func} className="btn">
+    <div onClick={func} className="btn delete-btn">
       <i className="fas fa-times" />
     </div>
   );

@@ -13,6 +13,15 @@ type Props = ConnectedProps<typeof connector> & {
 
 const Comments: FC<Props> = ({ deleteComment, picture, auth }) => {
   const renderComments = () => {
+    if (!picture.comments.length) {
+      return (
+        <div className="comment">
+          <p>
+            <span className="comment-text">No comments yet...</span>
+          </p>
+        </div>
+      );
+    }
     return picture.comments.map((comment) => (
       <div className="comment" key={comment._id}>
         <p>

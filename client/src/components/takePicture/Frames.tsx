@@ -1,73 +1,31 @@
-import { FC, useState } from 'react';
-import Carousel, { slidesToShowPlugin } from '@brainhubeu/react-carousel';
-import '@brainhubeu/react-carousel/lib/style.css';
+import { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import * as editPictureActions from '../../actions/editPictureActions';
-import { ReduxState } from 'reducers';
+import Carousel from './Carousel';
+
+const frames = [
+  '',
+  'images/frame-1.png',
+  'images/frame-3.png',
+  'images/frame-4.png',
+  'images/frame-5.png',
+];
 
 type Props = ConnectedProps<typeof connector>;
 
-const Frames: FC<Props> = ({ changeFrame, frame }) => {
-  // const [selected, setSelected] = useState('');
-
-  const renderCarouselItem = (path: string) => {
-    const handleSelect = () => {
-      changeFrame(path);
-      // setSelected(path);
-    };
-    if (!path) {
-      return (
-        <div
-          style={{ width: '200px', height: '100px' }}
-          className={frame === path ? 'selected' : ''}
-          onClick={handleSelect}
-        ></div>
-      );
-    }
-    return (
-      <img
-        className={frame === path ? 'selected' : ''}
-        src={path}
-        alt=""
-        width="200px"
-        height="100px"
-        onClick={handleSelect}
-      />
-    );
+const Frames: FC<Props> = ({ changeFrame }) => {
+  const handleSelect = (path: string) => {
+    changeFrame(path);
   };
 
   return (
-    <div style={{ maxWidth: '300px' }}>
-      <Carousel
-        plugins={[
-          // 'arrows',
-          'clickToChange',
-          'centered',
-          'infinite',
-          {
-            resolve: slidesToShowPlugin,
-            options: {
-              numberOfSlides: 2,
-            },
-          },
-        ]}
-      >
-        {renderCarouselItem('')}
-        {renderCarouselItem('images/frame-1.png')}
-        {renderCarouselItem('images/frame-2.png')}
-        {renderCarouselItem('images/frame-3.png')}
-        {renderCarouselItem('images/frame-4.png')}
-        {renderCarouselItem('images/frame-5.png')}
-      </Carousel>
+    <div className="carousel-wrapper">
+      <Carousel handleSelect={handleSelect} frames={frames} />
     </div>
   );
 };
 
-const mapStateToProps = (state: ReduxState) => ({
-  frame: state.edit.frame,
-});
-
-const connector = connect(mapStateToProps, editPictureActions);
+const connector = connect(null, editPictureActions);
 
 export default connector(Frames);

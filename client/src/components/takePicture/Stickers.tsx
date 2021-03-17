@@ -17,12 +17,11 @@ const Stickers: FC<Props> = ({ chooseSticker }) => {
 
     return (
       <img
-        className="stickerImage"
+        className="sticker-image"
         src={path}
         width="100px"
         height="100px"
         alt=""
-        // onClick={handleClick}
         draggable
         onDragStart={handleClick}
       />
@@ -30,7 +29,7 @@ const Stickers: FC<Props> = ({ chooseSticker }) => {
   };
 
   return (
-    <div>
+    <div className="stickers-wrapper">
       {renderSticker('images/sticker-1.png')}
       {renderSticker('images/sticker-2.png')}
       {renderSticker('images/sticker-3.png')}
