@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useCallback } from 'react';
 import WebcamCapture from './WebcamCapture';
 import { connect, ConnectedProps } from 'react-redux';
 import * as mainActions from '../../actions/mainActions';
@@ -16,9 +16,9 @@ const TakePicture: FC<Props> = ({
 }) => {
   const [page, setPage] = useState(0);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     setPage(page + 1);
-  };
+  }, [page]);
 
   const [isFetching, setIsFetching] = useInfiniteScroll(
     loadMore,

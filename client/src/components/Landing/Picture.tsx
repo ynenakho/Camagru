@@ -55,7 +55,11 @@ const PictureDiv: FC<Props> = ({
       <div>
         <div className="picture-section">
           <LikeButton likePicture={handleLike} auth={auth} picture={picture} />
-          <Button func={toggleShowComments} name="Comments" />
+          {!own ? (
+            <Button func={toggleShowComments} name="Comments" />
+          ) : (
+            <div />
+          )}
         </div>
         {renderComments()}
       </div>

@@ -40,7 +40,7 @@ exports.picturesOwnGet = (req: Request, res: Response, next: NextFunction) => {
     .exec(async (err, pictures) => {
       if (err) return next(err);
       const newPictures = await addUserNamesToPictures(pictures);
-      const pages = (await Picture.countDocuments().exec()) / length;
+      const pages = Math.ceil((await Picture.countDocuments().exec()) / length);
       res.json({ pictures: newPictures, pages });
     });
 };
@@ -55,7 +55,7 @@ exports.picturesGet = (req: Request, res: Response, next: NextFunction) => {
     .exec(async (err, pictures) => {
       if (err) return next(err);
       const newPictures = await addUserNamesToPictures(pictures);
-      const pages = (await Picture.countDocuments().exec()) / length;
+      const pages = Math.ceil((await Picture.countDocuments().exec()) / length);
       res.json({ pictures: newPictures, pages });
     });
 };

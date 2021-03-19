@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC, useCallback } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import Picture from './Picture';
 import * as mainActions from '../../actions/mainActions';
@@ -15,9 +15,9 @@ const Landing: FC<Props> = ({
 }) => {
   const [page, setPage] = useState(0);
 
-  const loadMore = () => {
+  const loadMore = useCallback(() => {
     setPage(page + 1);
-  };
+  }, [page]);
 
   const [isFetching, setIsFetching] = useInfiniteScroll(
     loadMore,
