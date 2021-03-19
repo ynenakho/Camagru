@@ -30,27 +30,32 @@ const getUserNameForPicture = async (picture: IPicture) => {
   };
 };
 
-exports.picturesAllGet = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user)
-    Picture.find({ _userId: req.user.id })
-      .sort([['createdAt', -1]])
-      .exec(async (err, pictures) => {
-        if (err) return next(err);
-        const newPictures = await addUserNamesToPictures(pictures);
-        res.json({ pictures: newPictures });
-      });
-};
-
-exports.picturesFiveGet = (req: Request, res: Response, next: NextFunction) => {
+exports.picturesOwnGet = (req: Request, res: Response, next: NextFunction) => {
   const page = +(req.query.page as string);
-  Picture.find({})
-    .limit(5)
-    .skip(5 * page)
+  const length = +(req.query.length as string);
+  Picture.find({ _userId: req?.user?.id })
+    .limit(length)
+    .skip(length * page)
     .sort([['createdAt', -1]])
     .exec(async (err, pictures) => {
       if (err) return next(err);
       const newPictures = await addUserNamesToPictures(pictures);
-      const pages = (await Picture.count().exec()) / 5;
+      const pages = (await Picture.countDocuments().exec()) / length;
+      res.json({ pictures: newPictures, pages });
+    });
+};
+
+exports.picturesGet = (req: Request, res: Response, next: NextFunction) => {
+  const page = +(req.query.page as string);
+  const length = +(req.query.length as string);
+  Picture.find({})
+    .limit(length)
+    .skip(length * page)
+    .sort([['createdAt', -1]])
+    .exec(async (err, pictures) => {
+      if (err) return next(err);
+      const newPictures = await addUserNamesToPictures(pictures);
+      const pages = (await Picture.countDocuments().exec()) / length;
       res.json({ pictures: newPictures, pages });
     });
 };

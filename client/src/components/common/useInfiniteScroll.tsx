@@ -1,23 +1,8 @@
 import { useState, useEffect } from 'react';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 
 const useInfiniteScroll = (callback: () => void, hasMore: boolean) => {
   const [isFetching, setIsFetching] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener('scroll', debounce(handleScroll, 100));
-    return () =>
-      window.removeEventListener('scroll', debounce(handleScroll, 100));
-  }, []);
-
-  useEffect(() => {
-    if (!isFetching) return;
-    if (!hasMore) {
-      setIsFetching(false);
-      return;
-    }
-    callback();
-  }, [isFetching]);
 
   const handleScroll = () => {
     if (
@@ -28,6 +13,21 @@ const useInfiniteScroll = (callback: () => void, hasMore: boolean) => {
       return;
     setIsFetching(true);
   };
+
+  useEffect(() => {
+    const throttledHandleScroll = throttle(handleScroll, 100);
+    window.addEventListener('scroll', throttledHandleScroll);
+    return () => window.removeEventListener('scroll', throttledHandleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isFetching) return;
+    if (!hasMore) {
+      setIsFetching(false);
+      return;
+    }
+    callback();
+  }, [isFetching, hasMore]);
 
   return [isFetching, setIsFetching] as const;
 };

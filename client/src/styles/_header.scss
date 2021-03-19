@@ -60,7 +60,7 @@
     .sidebar-link {
       padding: $sizing $sizing * 3;
       font-size: 1.2rem;
-      width: 300px - $sizing * 6;
+      width: 100%;
       &:hover {
         background-color: rgba(0, 0, 0, 0.1);
       }

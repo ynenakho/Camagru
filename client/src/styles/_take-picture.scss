@@ -42,13 +42,13 @@
 
 .user-pictures {
   display: flex;
-  // justify-content: space-between;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .user-pictures > * {
-  flex: 0 0 33.333%;
-  @media (max-width: $mobile) {
+  flex: 0 0 30%;
+  @media (max-width: $mobile + 60px) {
     flex: 0 0 100%;
   }
 }

@@ -7,7 +7,12 @@ import useInfiniteScroll from 'components/common/useInfiniteScroll';
 
 type Props = ConnectedProps<typeof connector>;
 
-const Landing: FC<Props> = ({ getFivePictures, pictures, pagesCount }) => {
+const Landing: FC<Props> = ({
+  getPictures,
+  pictures,
+  pagesCount,
+  resetPictures,
+}) => {
   const [page, setPage] = useState(0);
 
   const loadMore = () => {
@@ -20,15 +25,16 @@ const Landing: FC<Props> = ({ getFivePictures, pictures, pagesCount }) => {
   );
 
   useEffect(() => {
-    setIsFetching(false);
-  }, [pictures]);
+    resetPictures();
+  }, [resetPictures]);
 
   useEffect(() => {
-    getFivePictures(page);
-    if (!(pagesCount > page + 1)) {
-      setIsFetching(false);
-    }
-  }, [getFivePictures, page]);
+    setIsFetching(false);
+  }, [pictures, setIsFetching]);
+
+  useEffect(() => {
+    getPictures(page);
+  }, [page, getPictures]);
 
   const renderPictures = () =>
     pictures.map((picture) => <Picture picture={picture} key={picture._id} />);
@@ -36,14 +42,18 @@ const Landing: FC<Props> = ({ getFivePictures, pictures, pagesCount }) => {
   return (
     <div className="main-wrapper">
       {renderPictures()}
-      {isFetching && <p>Loading more pictures...</p>}
+      {isFetching && (
+        <div className="spinner-wrapper">
+          <i className="fas fa-spinner fa-2x fa-pulse" />
+        </div>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = (state: ReduxState) => ({
-  pictures: state.main.picturesMain,
-  pagesCount: state.main.pagesMain,
+  pictures: state.main.pictures,
+  pagesCount: state.main.pages,
 });
 
 const connector = connect(mapStateToProps, mainActions);

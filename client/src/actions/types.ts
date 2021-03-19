@@ -10,14 +10,13 @@ export const CLEAR_PICTURE = 'CLEAR_PICTURE';
 export const SET_CANVAS_DATA = 'SET_CANVAS_DATA';
 export const CLEAR_COORDS = 'CLEAR_COORDS';
 
-export const MAIN_GET_ALL_PICTURES = 'MAIN_GET_ALL_PICTURES';
+export const MAIN_GET_PICTURES = 'MAIN_GET_PICTURES';
 export const MAIN_DELETE_PICTURE = 'MAIN_DELETE_PICTURE';
 export const MAIN_GET_ERRORS = 'MAIN_GET_ERRORS';
 export const MAIN_LIKE_PICTURE = 'MAIN_LIKE_PICTURE';
 export const MAIN_ADD_COMMENT = 'MAIN_ADD_COMMENT';
 export const MAIN_SAVE_PICTURE = 'MAIN_SAVE_PICTURE';
-export const MAIN_GET_FIVE_PICTURES = 'MAIN_GET_FIVE_PICTURES';
-export const MAIN_DELETE_PICTURE_LANDING = 'MAIN_DELETE_PICTURE_LANDING';
+export const MAIN_RESET_PICTURES = 'MAIN_RESET_PICTURES';
 
 // AuthReducer Types
 type AuthUserAction = {
@@ -142,16 +141,6 @@ export type PictureType = {
   userName: string;
 };
 
-type GetAllPicturesAction = {
-  type: typeof MAIN_GET_ALL_PICTURES;
-  payload: PictureType[];
-};
-
-type DeletePictureLandingAction = {
-  type: typeof MAIN_DELETE_PICTURE_LANDING;
-  payload: string;
-};
-
 type DeletePictureAction = {
   type: typeof MAIN_DELETE_PICTURE;
   payload: string;
@@ -177,24 +166,26 @@ type SavePictureAction = {
   payload: PictureType;
 };
 
-type GetFivePicturesAction = {
-  type: typeof MAIN_GET_FIVE_PICTURES;
+type GetPicturesAction = {
+  type: typeof MAIN_GET_PICTURES;
   payload: { pictures: PictureType[]; pages: number };
 };
 
+type ResetPicturesAction = {
+  type: typeof MAIN_RESET_PICTURES;
+};
+
 export type MainActionsType =
-  | GetAllPicturesAction
-  | DeletePictureLandingAction
   | DeletePictureAction
   | GetErrorsAction
   | LikePictureAction
   | AddCommentAction
   | SavePictureAction
-  | GetFivePicturesAction;
+  | GetPicturesAction
+  | ResetPicturesAction;
 
 export type MainReducerType = {
-  picturesMain: PictureType[];
-  pagesMain: number;
   pictures: PictureType[];
+  pages: number;
   error: string;
 };

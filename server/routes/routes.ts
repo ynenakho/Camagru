@@ -45,8 +45,8 @@ const routes = (app: Express) => {
     requireAuth,
     pictureController.commentDelete
   );
-  app.get('/api/picture/all', requireAuth, pictureController.picturesAllGet);
-  app.get('/api/picture/five', pictureController.picturesFiveGet);
+  app.get('/api/pictures/own', requireAuth, pictureController.picturesOwnGet);
+  app.get('/api/pictures', pictureController.picturesGet);
 };
 
 export default routes;

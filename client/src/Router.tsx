@@ -9,9 +9,11 @@ import Settings from 'components/Settings/Settings';
 import TakePicture from 'components/takePicture/TakePicture';
 import ForgotPassword from 'components/auth/ForgotPassword';
 import PrivateRoute from 'components/common/PrivateRoute';
+import ScrollToTop from 'components/common/ScrollToTop';
 
 const Router: React.FC = () => (
   <BrowserRouter>
+    <ScrollToTop />
     <App>
       <Route path="/" exact component={Landing} />
       <Route path="/signin" exact component={SignIn} />

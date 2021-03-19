@@ -1,12 +1,11 @@
 import {
-  MAIN_GET_ALL_PICTURES,
   MAIN_DELETE_PICTURE,
   MAIN_GET_ERRORS,
   MAIN_LIKE_PICTURE,
   MAIN_ADD_COMMENT,
   MAIN_SAVE_PICTURE,
-  MAIN_GET_FIVE_PICTURES,
-  MAIN_DELETE_PICTURE_LANDING,
+  MAIN_GET_PICTURES,
+  MAIN_RESET_PICTURES,
   MainActionsType,
 } from './types';
 import axios from 'axios';
@@ -52,14 +51,14 @@ export const addComment = (
     );
 };
 
-export const getFivePictures = (page: number) => (
+export const getPictures = (page: number, length: number = 5) => (
   dispatch: ThunkDispatch<ReduxState, void, MainActionsType>
 ) => {
   axios
-    .get('/api/picture/five', { params: { page } })
+    .get('/api/pictures', { params: { page, length } })
     .then((response) => {
       dispatch({
-        type: MAIN_GET_FIVE_PICTURES,
+        type: MAIN_GET_PICTURES,
         payload: response.data,
       });
     })
@@ -71,15 +70,15 @@ export const getFivePictures = (page: number) => (
     );
 };
 
-export const getAllPictures = () => (
+export const getOwnPictures = (page: number, length: number = 12) => (
   dispatch: ThunkDispatch<ReduxState, void, MainActionsType>
 ) => {
   axios
-    .get('/api/picture/all')
+    .get('/api/pictures/own', { params: { page, length } })
     .then((response) => {
       dispatch({
-        type: MAIN_GET_ALL_PICTURES,
-        payload: response.data.pictures,
+        type: MAIN_GET_PICTURES,
+        payload: response.data,
       });
     })
     .catch((err) =>
@@ -101,25 +100,6 @@ export const likePicture = (pictureId: string) => (
         payload: response.data,
       });
     })
-    .catch((err) =>
-      dispatch({
-        type: MAIN_GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
-};
-
-export const deletePictureLanding = (pictureId: string) => (
-  dispatch: ThunkDispatch<ReduxState, void, MainActionsType>
-) => {
-  axios
-    .delete(`/api/picture/delete/${pictureId}`)
-    .then((response) =>
-      dispatch({
-        type: MAIN_DELETE_PICTURE_LANDING,
-        payload: response.data.pictureId,
-      })
-    )
     .catch((err) =>
       dispatch({
         type: MAIN_GET_ERRORS,
@@ -164,4 +144,12 @@ export const savePictureToServer = (picturePath: string) => (
         payload: err.response.data,
       })
     );
+};
+
+export const resetPictures = () => (
+  dispatch: ThunkDispatch<ReduxState, void, MainActionsType>
+) => {
+  dispatch({
+    type: MAIN_RESET_PICTURES,
+  });
 };

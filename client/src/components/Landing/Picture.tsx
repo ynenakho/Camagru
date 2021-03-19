@@ -12,13 +12,15 @@ import Modal from 'components/common/Modal';
 
 type Props = ConnectedProps<typeof connector> & {
   picture: PictureType;
+  own?: boolean;
 };
 
 const PictureDiv: FC<Props> = ({
   picture,
-  deletePictureLanding,
+  deletePicture,
   likePicture,
   auth,
+  own,
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [width, setWidth] = useState(100);
@@ -33,7 +35,7 @@ const PictureDiv: FC<Props> = ({
   };
 
   const handleDeletePicture = () => {
-    deletePictureLanding(picture._id);
+    deletePicture(picture._id);
     setShowDeleteModal(false);
   };
 
