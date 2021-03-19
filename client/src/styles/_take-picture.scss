@@ -48,6 +48,9 @@
 
 .user-pictures > * {
   flex: 0 0 33.333%;
+  @media (max-width: $mobile) {
+    flex: 0 0 100%;
+  }
 }
 
 .user-picture-wrapper {

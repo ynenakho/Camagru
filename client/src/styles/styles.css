@@ -73,6 +73,14 @@
           flex: 0 0 33.333%;
 }
 
+@media (max-width: 600px) {
+  .user-pictures > * {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+  }
+}
+
 .user-picture-wrapper {
   margin-top: 8px;
   display: -webkit-box;

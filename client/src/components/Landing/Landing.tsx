@@ -1,51 +1,49 @@
 import { useState, useEffect, FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-
 import Picture from './Picture';
-import Button from '../common/Button';
 import * as mainActions from '../../actions/mainActions';
 import { ReduxState } from 'reducers';
+import useInfiniteScroll from 'components/common/useInfiniteScroll';
 
 type Props = ConnectedProps<typeof connector>;
 
-const Landing: FC<Props> = ({ getFivePictures, pictures }) => {
+const Landing: FC<Props> = ({ getFivePictures, pictures, pagesCount }) => {
   const [page, setPage] = useState(0);
+
+  const loadMore = () => {
+    setPage(page + 1);
+  };
+
+  const [isFetching, setIsFetching] = useInfiniteScroll(
+    loadMore,
+    pagesCount > page + 1
+  );
+
+  useEffect(() => {
+    setIsFetching(false);
+  }, [pictures]);
 
   useEffect(() => {
     getFivePictures(page);
-  }, [page, getFivePictures]);
+    if (!(pagesCount > page + 1)) {
+      setIsFetching(false);
+    }
+  }, [getFivePictures, page]);
 
   const renderPictures = () =>
     pictures.map((picture) => <Picture picture={picture} key={picture._id} />);
 
-  const prevPage = () => {
-    if (page === 0) return;
-    setPage(page - 1);
-  };
-
-  const nextPage = () => {
-    if (pictures.length < 5) return;
-    setPage(page + 1);
-  };
-
-  const renderArrows = () => (
-    <div className="prevNextDiv">
-      <Button name="Prev" func={prevPage} />
-      <h5>{page + 1}</h5>
-      <Button name="Next" func={nextPage} />
-    </div>
-  );
-
   return (
     <div className="main-wrapper">
       {renderPictures()}
-      {renderArrows()}
+      {isFetching && <p>Loading more pictures...</p>}
     </div>
   );
 };
 
 const mapStateToProps = (state: ReduxState) => ({
-  pictures: state.main.picturesFive,
+  pictures: state.main.picturesMain,
+  pagesCount: state.main.pagesMain,
 });
 
 const connector = connect(mapStateToProps, mainActions);

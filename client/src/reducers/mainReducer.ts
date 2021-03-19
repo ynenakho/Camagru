@@ -13,15 +13,16 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE: MainReducerType = {
-  picturesFive: [] as PictureType[],
+  picturesMain: [] as PictureType[],
+  pagesMain: 0,
   pictures: [] as PictureType[],
   error: '',
 };
 
 const getNewState = (state: MainReducerType, pic: PictureType) => {
   const newState = Object.assign({}, state);
-  if (newState.picturesFive)
-    newState.picturesFive = newState.picturesFive.map((picture) => {
+  if (newState.picturesMain)
+    newState.picturesMain = newState.picturesMain.map((picture) => {
       if (picture._id === pic._id) {
         picture = Object.assign({}, pic);
       }
@@ -51,7 +52,8 @@ export const mainReducer = (state = INITIAL_STATE, action: MainActionsType) => {
     case MAIN_GET_FIVE_PICTURES:
       return {
         ...state,
-        picturesFive: action.payload,
+        picturesMain: [...state.picturesMain, ...action.payload.pictures],
+        pagesMain: action.payload.pages,
       };
     case MAIN_LIKE_PICTURE:
       newState = getNewState(state, action.payload);
@@ -71,7 +73,7 @@ export const mainReducer = (state = INITIAL_STATE, action: MainActionsType) => {
     case MAIN_DELETE_PICTURE_LANDING:
       return {
         ...state,
-        picturesFive: state.picturesFive.filter(
+        picturesMain: state.picturesMain.filter(
           (picture) => picture._id !== action.payload
         ),
       };

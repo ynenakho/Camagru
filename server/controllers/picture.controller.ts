@@ -4,7 +4,7 @@ import keys from '../config/keys';
 import sgMail from '@sendgrid/mail';
 import { Request, Response, NextFunction } from 'express';
 
-const addUsernamesToPictures = (pictures: IPicture[]) => {
+const addUserNamesToPictures = (pictures: IPicture[]) => {
   return new Promise((resolve, reject) => {
     const userIds = pictures.map((picture) => picture._userId);
     User.find({ _id: { $in: userIds } })
@@ -36,7 +36,7 @@ exports.picturesAllGet = (req: Request, res: Response, next: NextFunction) => {
       .sort([['createdAt', -1]])
       .exec(async (err, pictures) => {
         if (err) return next(err);
-        const newPictures = await addUsernamesToPictures(pictures);
+        const newPictures = await addUserNamesToPictures(pictures);
         res.json({ pictures: newPictures });
       });
 };
@@ -49,8 +49,9 @@ exports.picturesFiveGet = (req: Request, res: Response, next: NextFunction) => {
     .sort([['createdAt', -1]])
     .exec(async (err, pictures) => {
       if (err) return next(err);
-      const newPictures = await addUsernamesToPictures(pictures);
-      res.json({ pictures: newPictures });
+      const newPictures = await addUserNamesToPictures(pictures);
+      const pages = (await Picture.count().exec()) / 5;
+      res.json({ pictures: newPictures, pages });
     });
 };
 

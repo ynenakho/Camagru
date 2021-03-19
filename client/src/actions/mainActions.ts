@@ -60,7 +60,7 @@ export const getFivePictures = (page: number) => (
     .then((response) => {
       dispatch({
         type: MAIN_GET_FIVE_PICTURES,
-        payload: response.data.pictures,
+        payload: response.data,
       });
     })
     .catch((err) =>

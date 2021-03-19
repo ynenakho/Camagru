@@ -179,7 +179,7 @@ type SavePictureAction = {
 
 type GetFivePicturesAction = {
   type: typeof MAIN_GET_FIVE_PICTURES;
-  payload: PictureType[];
+  payload: { pictures: PictureType[]; pages: number };
 };
 
 export type MainActionsType =
@@ -193,7 +193,8 @@ export type MainActionsType =
   | GetFivePicturesAction;
 
 export type MainReducerType = {
-  picturesFive: PictureType[];
+  picturesMain: PictureType[];
+  pagesMain: number;
   pictures: PictureType[];
   error: string;
 };
