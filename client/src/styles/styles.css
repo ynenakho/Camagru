@@ -99,30 +99,8 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.user-picture {
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  background-color: #ffffff;
-  border-radius: 4px;
-  margin: auto;
-  width: 90%;
-}
-
-@media (max-width: 600px) {
-  .user-picture {
-    width: 100%;
-  }
-}
-
 .delete-button-wrapper {
   margin-right: 8px;
-}
-
-.prevNextDiv {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
 }
 
 .main-wrapper {

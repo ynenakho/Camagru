@@ -1,7 +1,5 @@
 import User, { IUser } from '../models/user.model';
-import VerificationToken, {
-  IVerificationToken,
-} from '../models/verificationToken.model';
+import VerificationToken from '../models/verificationToken.model';
 import keys from '../config/keys';
 import sgMail from '@sendgrid/mail';
 import crypto from 'crypto';

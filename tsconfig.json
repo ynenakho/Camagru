@@ -5,12 +5,4 @@
     "esModuleInterop": true,
     "strict": true
   }
-  // "references": [
-  //   {
-  //     "path": "./client"
-  //   },
-  //   {
-  //     "path": "./server"
-  //   }
-  // ]
 }

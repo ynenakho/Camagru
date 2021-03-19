@@ -1,6 +1,6 @@
 import * as authController from '../controllers/auth.controller';
-const awsController = require('../controllers/aws.controller');
-const pictureController = require('../controllers/picture.controller');
+import * as awsController from '../controllers/aws.controller';
+import * as pictureController from '../controllers/picture.controller';
 import passport from 'passport';
 import { usePassport } from '../services/passport';
 import { Express } from 'express';

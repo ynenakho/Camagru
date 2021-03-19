@@ -10,7 +10,6 @@ const App: React.FC<Props> = ({ children }) => {
     <div className="app-wrapper">
       <Header />
       <div className="app">{children}</div>
-
       <Footer />
     </div>
   );

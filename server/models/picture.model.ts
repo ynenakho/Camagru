@@ -17,11 +17,10 @@ export interface IPicture extends Document, MongoResult {
   ];
   comments: [
     {
-      _id?: string; // FIX ME
+      _id?: string;
       _userId: IUser['_id'];
       userName: string;
       text: string;
-      // createdAt: Date;
     }
   ];
 }
@@ -31,7 +30,6 @@ const pictureSchema = new Schema(
     _userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     pictureName: { type: String, required: true },
     picturePath: { type: String, required: true },
-    // createdAt: { type: Date, required: true, default: Date.now },
     likes: [
       {
         _userId: {
@@ -54,10 +52,6 @@ const pictureSchema = new Schema(
           type: String,
           required: true,
         },
-        // createdAt: {
-        //   type: Date,
-        //   default: Date.now,
-        // },
       },
     ],
   },

@@ -1,6 +1,5 @@
 import HttpError from './HttpError';
 import { ErrorRequestHandler } from 'express';
-import mongoose from 'mongoose';
 
 type Response = {
   [key: string]: string | number | null | string[] | undefined;

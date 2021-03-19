@@ -1,9 +1,9 @@
-import Picture, { IPicture } from '../models/picture.model';
+import Picture from '../models/picture.model';
 import keys from '../config/keys';
 import AWS from 'aws-sdk';
 import { Request, Response, NextFunction } from 'express';
 
-exports.uploadPicturePost = (
+export const uploadPicturePost = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -46,7 +46,7 @@ exports.uploadPicturePost = (
   });
 };
 
-exports.pictureDelete = (req: Request, res: Response) => {
+export const pictureDelete = (req: Request, res: Response) => {
   Picture.findById(req.params.id)
     .then((picture) => {
       if (!picture) {

@@ -30,7 +30,11 @@ const getUserNameForPicture = async (picture: IPicture) => {
   };
 };
 
-exports.picturesOwnGet = (req: Request, res: Response, next: NextFunction) => {
+export const picturesOwnGet = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const page = +(req.query.page as string);
   const length = +(req.query.length as string);
   Picture.find({ _userId: req?.user?.id })
@@ -45,7 +49,11 @@ exports.picturesOwnGet = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-exports.picturesGet = (req: Request, res: Response, next: NextFunction) => {
+export const picturesGet = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const page = +(req.query.page as string);
   const length = +(req.query.length as string);
   Picture.find({})
@@ -60,7 +68,7 @@ exports.picturesGet = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-exports.commentDelete = (req: Request, res: Response) => {
+export const commentDelete = (req: Request, res: Response) => {
   Picture.findById(req.params.id)
     .then((picture) => {
       if (picture) {
@@ -70,7 +78,7 @@ exports.commentDelete = (req: Request, res: Response) => {
             (comment) => comment._id?.toString() === req.params.comment_id
           ).length === 0
         ) {
-          return res.status(404).json({ error: 'Comment does not exists' });
+          return res.status(404).json({ error: 'Comment does not exist' });
         }
 
         // Get remove index
@@ -91,7 +99,11 @@ exports.commentDelete = (req: Request, res: Response) => {
     .catch((err) => res.status(404).json({ error: 'Picture not found' }));
 };
 
-exports.addCommentPost = (req: Request, res: Response, next: NextFunction) => {
+export const addCommentPost = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   Picture.findById(req.params.id)
     .then((picture) => {
       if (picture) {
@@ -139,7 +151,7 @@ exports.addCommentPost = (req: Request, res: Response, next: NextFunction) => {
     .catch((err) => res.status(404).json({ error: 'Picture not found' }));
 };
 
-exports.pictureLikePost = (req: Request, res: Response) => {
+export const pictureLikePost = (req: Request, res: Response) => {
   Picture.findById(req.params.id)
     .then((picture) => {
       if (!picture) {

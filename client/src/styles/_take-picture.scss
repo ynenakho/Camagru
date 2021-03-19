@@ -64,17 +64,6 @@
   border-bottom: 1px solid $lightGreyColor;
 }
 
-.user-picture {
-  border: 1px solid $shadowColor;
-  background-color: $mainColor;
-  border-radius: 4px;
-  margin: auto;
-  width: 90%;
-  @media (max-width: $mobile) {
-    width: 100%;
-  }
-}
-
 .delete-button-wrapper {
   margin-right: $sizing;
 }
