@@ -1,18 +1,13 @@
-import { useState, ComponentType } from 'react';
-import { reduxForm, Field, reset, InjectedFormProps } from 'redux-form';
-import { compose, Dispatch } from 'redux';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import * as authActions from '../../actions/authActions';
-import { RouteComponentProps } from 'react-router-dom';
-import inputField from '../common/InputField';
+import InputField from '../common/InputField';
 import AuthButton from '../common/AuthButton';
 import { ReduxState } from 'reducers';
 import Modal from 'components/common/Modal';
+import { useHistory } from 'react-router-dom';
 
-type Props = ComponentType &
-  InjectedFormProps &
-  ConnectedProps<typeof connector> &
-  RouteComponentProps;
+type Props = ConnectedProps<typeof connector>;
 
 type FormType = {
   username: string;
@@ -20,14 +15,22 @@ type FormType = {
   password: string;
 };
 
-const SignUp: React.FC<Props> = ({
-  handleSubmit,
-  submitting,
-  error,
-  signup,
-  history,
-}) => {
+const INITIAL_FORM = {
+  username: '',
+  email: '',
+  password: '',
+};
+
+const SignUp: React.FC<Props> = ({ errorMessage, signup, clearErrors }) => {
+  const history = useHistory();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState(INITIAL_FORM);
+
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => clearErrors, [clearErrors]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -38,43 +41,70 @@ const SignUp: React.FC<Props> = ({
     history.push('/signin');
   };
 
-  const onSubmit: any = (formValues: FormType) => {
-    return signup(formValues, () => {
+  const onSubmit = async () => {
+    setSubmitting(true);
+    await signup(form, () => {
       toggleModal();
     });
+    setSubmitting(false);
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
+    if (errorMessage) clearErrors();
+  };
+
+  const handleSubmit = () => {
+    const _errors = validate(form);
+    if (!Object.values(_errors).every((value) => !value)) {
+      setErrors(_errors);
+      return;
+    }
+    onSubmit();
   };
 
   return (
     <>
       <div className="section">
         <h1>Sign Up</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Field
+        <div>
+          <InputField
             label="Username"
             icon="account_box"
             name="username"
             type="text"
-            component={inputField}
+            value={form.username}
+            onChange={onChange}
+            error={errors.username}
           />
-          <Field
+          <InputField
             label="Email"
             icon="email"
             name="email"
             type="text"
-            component={inputField}
+            value={form.email}
+            onChange={onChange}
+            error={errors.email}
           />
-          <Field
+          <InputField
             label="Password"
             icon="lock"
             name="password"
             type="password"
-            component={inputField}
+            value={form.password}
+            onChange={onChange}
+            error={errors.password}
           />
-          {error && <div className="error-message">{error}</div>}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <div className="signup-buttons-wrapper">
-            <AuthButton submitting={submitting} name="sign up" />
+            <AuthButton
+              submitting={submitting}
+              name="sign up"
+              onClick={handleSubmit}
+            />
           </div>
-        </form>
+        </div>
       </div>
       <Modal title="Almost there!" onClose={onClose} show={showModal}>
         <p>
@@ -90,7 +120,7 @@ const validate = ({ username, email, password }: FormType) => {
 
   if (!email) {
     errors.email = 'Email field is required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+  } else if (!/^[^@]+@\w+(\.\w+)+\w$/.test(email)) {
     errors.email = 'Invalid email address';
   }
   if (!password) {
@@ -109,12 +139,7 @@ const validate = ({ username, email, password }: FormType) => {
 const mapStateToProps = (state: ReduxState) => ({
   errorMessage: state.auth.errorMessage,
 });
-const afterSubmit = (result: any, dispatch: Dispatch) =>
-  dispatch(reset('signUp'));
 
 const connector = connect(mapStateToProps, authActions);
 
-export default compose<Props>(
-  connector,
-  reduxForm({ form: 'signUp', validate, onSubmitSuccess: afterSubmit })
-)(SignUp);
+export default connector(SignUp);

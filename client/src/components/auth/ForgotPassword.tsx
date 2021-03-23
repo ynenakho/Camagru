@@ -1,38 +1,36 @@
-import { useState, ComponentType } from 'react';
-import {
-  reduxForm,
-  Field,
-  formValueSelector,
-  InjectedFormProps,
-} from 'redux-form';
-import { compose } from 'redux';
+import { ChangeEvent, useState, useEffect, FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
-
-import renderField from 'components/common/InputField';
+import InputField from 'components/common/InputField';
 import AuthButton from 'components/common/AuthButton';
 import * as authActions from 'actions/authActions';
 import { ReduxState } from 'reducers';
 import Modal from 'components/common/Modal';
+import { useHistory } from 'react-router-dom';
 
-type Props = ComponentType &
-  InjectedFormProps &
-  ConnectedProps<typeof connector> &
-  RouteComponentProps;
+type Props = ConnectedProps<typeof connector>;
 
 type FormType = {
   email: string;
 };
 
-const ForgotPassword: React.FC<Props> = ({
+const INITIAL_FORM = {
+  email: '',
+};
+
+const ForgotPassword: FC<Props> = ({
   forgotPassword,
-  handleSubmit,
-  submitting,
-  error,
-  email,
-  history,
+  errorMessage,
+  clearErrors,
 }) => {
+  const history = useHistory();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState(INITIAL_FORM);
+
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => clearErrors, [clearErrors]);
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -43,33 +41,57 @@ const ForgotPassword: React.FC<Props> = ({
     history.push('/signin');
   };
 
-  const onSubmit: any = (formValues: FormType) =>
-    forgotPassword(formValues, () => {
+  const onSubmit = async () => {
+    setSubmitting(true);
+    await forgotPassword(form, () => {
       toggleModal();
     });
+    setSubmitting(false);
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
+    if (errorMessage) clearErrors();
+  };
+
+  const handleSubmit = () => {
+    const _errors = validate(form);
+
+    if (!Object.values(_errors).every((value) => !value)) {
+      setErrors(_errors);
+      return;
+    }
+    onSubmit();
+  };
 
   return (
     <>
       <div className="section">
         <h1>Forgot Password?</h1>
         <h4>Get your new password sent on email</h4>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Field
-            labelColor="white-text"
+        <div>
+          <InputField
             label="Email"
             icon="email"
             name="email"
             type="text"
-            component={renderField}
+            value={form.email}
+            onChange={onChange}
+            error={errors.email}
           />
-          {error && <div style={{ color: 'red' }}>{error}</div>}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
           <div className="signup-buttons-wrapper">
-            <AuthButton submitting={submitting} name="submit" />
+            <AuthButton
+              submitting={submitting}
+              name="submit"
+              onClick={handleSubmit}
+            />
           </div>
-        </form>
+        </div>
       </div>
       <Modal title="Confirmation" onClose={onClose} show={showModal}>
-        <p>New password has been sent to {email}</p>
+        <p>New password has been sent to {form.email}</p>
       </Modal>
     </>
   );
@@ -80,21 +102,16 @@ const validate = ({ email }: FormType) => {
 
   if (!email) {
     errors.email = 'Email field is required';
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+  } else if (!/^[^@]+@\w+(\.\w+)+\w$/.test(email)) {
     errors.email = 'Invalid email address';
   }
   return errors;
 };
 
-const selector = formValueSelector('forgotPassword');
-
 const mapStateToProps = (state: ReduxState) => ({
-  email: selector(state, 'email'),
+  errorMessage: state.auth.errorMessage,
 });
 
 const connector = connect(mapStateToProps, authActions);
 
-export default compose<Props>(
-  connector,
-  reduxForm({ form: 'forgotPassword', validate })
-)(ForgotPassword);
+export default connector(ForgotPassword);

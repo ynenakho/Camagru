@@ -6,7 +6,6 @@ import {
   AuthActionType,
   UserType,
 } from './types';
-import { SubmissionError } from 'redux-form';
 import setAuthToken from '../components/common/setAuthToken';
 import axios from 'axios';
 import { Dispatch } from 'redux';
@@ -16,6 +15,9 @@ import { ReduxState } from 'reducers';
 type UserDataType = {
   username: string;
   email: string;
+  oldPassword: string;
+  newPassword: string;
+  getNotified: boolean;
 };
 
 export const updateProfile = (userData: UserDataType, callback: () => void) => (
@@ -37,9 +39,6 @@ export const updateProfile = (userData: UserDataType, callback: () => void) => (
       dispatch({
         type: AUTH_ERROR,
         payload: e.response.data.message,
-      });
-      throw new SubmissionError({
-        _error: e.response.data.message,
       });
     });
 
@@ -86,9 +85,6 @@ export const signup = (
         type: AUTH_ERROR,
         payload: e.response.data.message,
       });
-      throw new SubmissionError({
-        _error: e.response.data.message,
-      });
     });
 
 export const signin = (
@@ -113,10 +109,8 @@ export const signin = (
     .catch((e) => {
       dispatch({
         type: AUTH_ERROR,
-        payload: e.response.data,
-      });
-      throw new SubmissionError({
-        _error: 'Incorrect Username/Password.',
+        payload: 'Incorrect Username/Password.',
+        // payload: e.response.data,
       });
     });
 
@@ -141,13 +135,14 @@ export const forgotPassword = (
 ) => (dispatch: Dispatch) =>
   axios
     .post('/api/forgotpassword', { email })
-    .then((response) => callback())
+    .then(() => callback())
     .catch((e) => {
       dispatch({
         type: AUTH_ERROR,
         payload: e.response.data.message,
       });
-      throw new SubmissionError({
-        _error: e.response.data.message,
-      });
     });
+
+export const clearErrors = () => (dispatch: Dispatch) => {
+  dispatch({ type: AUTH_ERROR, payload: '' });
+};

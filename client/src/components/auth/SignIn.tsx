@@ -1,63 +1,90 @@
-import { ComponentType } from 'react';
-import { reduxForm, Field, reset, InjectedFormProps } from 'redux-form';
-import { compose, Dispatch } from 'redux';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
-import renderField from '../common/InputField';
+import InputField from '../common/InputField';
 import AuthButton from '../common/AuthButton';
 import * as authActions from '../../actions/authActions';
 import { ReduxState } from 'reducers';
 
-type Props = ComponentType &
-  InjectedFormProps &
-  ConnectedProps<typeof connector> &
-  RouteComponentProps;
+type Props = ConnectedProps<typeof connector>;
 
 type FormType = {
   username: string;
   password: string;
 };
 
-const SignIn: React.FC<Props> = ({
-  handleSubmit,
-  submitting,
-  error,
-  signin,
-  history,
-}) => {
-  const onSubmit: any = (formValues: FormType) => {
-    return signin(formValues, () => {
+const INITIAL_FORM = {
+  username: '',
+  password: '',
+};
+
+const SignIn: React.FC<Props> = ({ signin, errorMessage, clearErrors }) => {
+  const history = useHistory();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState(INITIAL_FORM);
+
+  useEffect(() => clearErrors, [clearErrors]);
+
+  const onSubmit = async () => {
+    setSubmitting(true);
+    await signin(form, () => {
       history.push('/');
     });
+    setSubmitting(false);
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' });
+    if (errorMessage) clearErrors();
+  };
+
+  const handleSubmit = () => {
+    const _errors = validate(form);
+    if (!Object.values(_errors).every((value) => !value)) {
+      setErrors(_errors);
+      return;
+    }
+    onSubmit();
   };
 
   return (
     <div className="section">
       <h1>Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Field
+      <div>
+        <InputField
           label="Username"
           icon="account_box"
           name="username"
           type="text"
-          component={renderField}
+          value={form.username}
+          onChange={onChange}
+          error={errors.username}
         />
-        <Field
+        <InputField
           label="Password"
           icon="lock"
           name="password"
           type="password"
-          component={renderField}
+          value={form.password}
+          onChange={onChange}
+          error={errors.password}
         />
-        {error && <div className="error-message">{error}</div>}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="signin-buttons-wrapper">
-          <AuthButton submitting={submitting} name="Login" />
+          <AuthButton
+            submitting={submitting}
+            name="Login"
+            onClick={handleSubmit}
+          />
           <Link to="/forgotpassword" className="btn auth-btn-grey">
             Forgot Password
           </Link>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
@@ -78,12 +105,6 @@ const mapStateToProps = (state: ReduxState) => ({
   errorMessage: state.auth.errorMessage,
 });
 
-const afterSubmit = (result: any, dispatch: Dispatch) =>
-  dispatch(reset('signIn'));
-
 const connector = connect(mapStateToProps, authActions);
 
-export default compose<Props>(
-  connector,
-  reduxForm({ form: 'signIn', validate, onSubmitSuccess: afterSubmit })
-)(SignIn);
+export default connector(SignIn);

@@ -43,8 +43,8 @@ export const forgotPasswordPost = async (
       const mailOptions = {
         from: 'no-reply@camagru.com',
         to: email,
-        subject: 'Account Verification Token',
-        text: `Hello, ${user.username}
+        subject: 'New Password',
+        text: `Hello, ${user.username}\n
         Your new password is ${newPassword}`,
       };
       sgMail.send(mailOptions, undefined, (err) => {

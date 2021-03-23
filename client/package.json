@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/redux-form": "^8.3.1",
     "axios": "^0.21.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
@@ -15,7 +14,6 @@
     "react-scripts": "4.0.3",
     "react-webcam": "^5.2.3",
     "redux": "^4.0.5",
-    "redux-form": "^8.3.7",
     "redux-thunk": "^2.3.0",
     "typescript": "^4.2.3"
   },
