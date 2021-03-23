@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2019",
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": true,
     "outDir": "./dist",
     "rootDir": ".",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "composite": true
   },
 
   "include": ["**/*.ts", "**/*.tsx"]
