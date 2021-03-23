@@ -1,5 +1,5 @@
 {
-  "main": "src/index",
+  "main": "src/index.tsx",
   "name": "client",
   "version": "0.1.0",
   "private": true,
