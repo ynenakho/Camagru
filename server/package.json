@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node server.ts",
+    "start": "ts-node server.js",
     "server": "nodemon --delay 500ms server.ts"
   },
   "author": "Yuriy Nenakhov",
