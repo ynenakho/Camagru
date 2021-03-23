@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FC } from 'react';
+import { useState, useEffect, useRef, FC, MouseEvent } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { ReduxState } from 'reducers';
 
@@ -129,7 +129,7 @@ const Canvas: FC<Props> = ({
     return { x: 0, y: 0 };
   };
 
-  const getMousePos = (e: React.MouseEvent) => {
+  const getMousePos = (e: MouseEvent) => {
     if (ctx && canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect();
 
@@ -147,7 +147,7 @@ const Canvas: FC<Props> = ({
     return { x: 0, y: 0, clientX: 0, clientY: 0 };
   };
 
-  const handleDrop = (e: React.MouseEvent) => {
+  const handleDrop = (e: MouseEvent) => {
     if (!sticker) return;
     const position = getMousePos(e);
     if (canvasRef.current) {

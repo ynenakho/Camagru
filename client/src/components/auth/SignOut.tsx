@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import * as authActions from '../../actions/authActions';
 
 type Props = ConnectedProps<typeof connector>;
 
-const SignOut: React.FC<Props> = ({ signout }) => {
+const SignOut: FC<Props> = ({ signout }) => {
   useEffect(() => {
     signout();
   }, [signout]);

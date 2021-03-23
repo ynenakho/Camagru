@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import * as authActions from '../../actions/authActions';
 import InputField from '../common/InputField';
@@ -21,7 +21,7 @@ const INITIAL_FORM = {
   password: '',
 };
 
-const SignUp: React.FC<Props> = ({ errorMessage, signup, clearErrors }) => {
+const SignUp: FC<Props> = ({ errorMessage, signup, clearErrors }) => {
   const history = useHistory();
 
   const [submitting, setSubmitting] = useState(false);

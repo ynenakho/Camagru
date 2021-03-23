@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, FormEvent } from 'react';
 
 type Props = {
   handleSelect: (path: string) => void;
@@ -10,7 +10,7 @@ const Carousel: FC<Props> = ({ handleSelect, frames }) => {
 
   const renderInputs = () => {
     return frames.map((src, index) => {
-      const handleCheck = (e: React.FormEvent<HTMLInputElement>) => {
+      const handleCheck = (e: FormEvent<HTMLInputElement>) => {
         setChecked(e.currentTarget.id);
         handleSelect(src);
       };

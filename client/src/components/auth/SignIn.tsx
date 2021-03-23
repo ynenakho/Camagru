@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ const INITIAL_FORM = {
   password: '',
 };
 
-const SignIn: React.FC<Props> = ({ signin, errorMessage, clearErrors }) => {
+const SignIn: FC<Props> = ({ signin, errorMessage, clearErrors }) => {
   const history = useHistory();
 
   const [submitting, setSubmitting] = useState(false);

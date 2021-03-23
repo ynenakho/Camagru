@@ -1,5 +1,5 @@
 import { BrowserRouter, Route } from 'react-router-dom';
-
+import { FC } from 'react';
 import Landing from 'components/Landing/Landing';
 import App from 'components/App';
 import SignIn from 'components/auth/SignIn';
@@ -11,7 +11,7 @@ import ForgotPassword from 'components/auth/ForgotPassword';
 import PrivateRoute from 'components/common/PrivateRoute';
 import ScrollToTop from 'components/common/ScrollToTop';
 
-const Router: React.FC = () => (
+const Router: FC = () => (
   <BrowserRouter>
     <ScrollToTop />
     <App>

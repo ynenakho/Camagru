@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ReduxState } from 'reducers';
 
 type Props = ConnectedProps<typeof connector>;
 
-const Header: React.FC<Props> = ({ authenticated, user }) => {
+const Header: FC<Props> = ({ authenticated, user }) => {
   const sidenavRef = useRef<HTMLDivElement>(null);
   const [showSidebar, setShowSidebar] = useState(false);
 
