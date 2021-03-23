@@ -1,8 +1,9 @@
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import { ReactChild } from 'react';
 
 type Props = {
-  children: React.ReactChild[];
+  children: ReactChild[];
 };
 
 const App: React.FC<Props> = ({ children }) => {
