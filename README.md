@@ -9,7 +9,7 @@ Full user authorization, Likes, Comments, Fun Stickers and More!!!
 ## Used technologies
 
 ### V2
-Typescript, Node, Express, Passport, React, Redux, SCSS
+Node, Express, Passport, React, Redux, Typescript, SCSS
 
 ### V1
 Node, Express, Passport, React, Redux, MaterializeCSS
