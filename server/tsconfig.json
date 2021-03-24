@@ -7,7 +7,7 @@
     "outDir": "./dist",
     "rootDir": ".",
     "baseUrl": "./",
-    "composite": true
+    "noImplicitAny": true
   },
 
   "include": ["**/*.ts", "**/*.tsx"]

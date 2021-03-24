@@ -16,7 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "./src",
-    "composite": true
+    "noImplicitAny": true
   },
   "include": ["./**/*.ts", "./**/*.tsx"]
 }
