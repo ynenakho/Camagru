@@ -12,6 +12,7 @@ import { UserType } from 'actions/types';
 
 import reducers from './reducers';
 import 'styles/styles.css';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 declare global {
   interface Window {
@@ -61,3 +62,5 @@ ReactDOM.render(
   </Provider>,
   document.querySelector('#root')
 );
+
+serviceWorkerRegistration.register();
