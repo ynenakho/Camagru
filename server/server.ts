@@ -5,13 +5,12 @@ import logger from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
 import path from 'path';
-
 import routes from './routes/routes';
-
 import keys from './config/keys';
-
 import { IUser } from './models/user.model';
 import errorHandler from './helpers/errorHandler';
+import { setCache } from './helpers/setCache';
+import { sslRedirect } from './helpers/sslRedirect';
 
 const app = express();
 
@@ -39,6 +38,8 @@ app.use(errorHandler);
 
 // Server  static assets if in production
 if (process.env.NODE_ENV === 'production') {
+  app.use(setCache);
+  app.use(sslRedirect);
   // Set static folder
   app.use(express.static('client/build'));
   app.get('*', (req, res) => {
